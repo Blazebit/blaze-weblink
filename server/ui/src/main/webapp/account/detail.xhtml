@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://java.sun.com/jsf/composite/weblink"
+	template="/WEB-INF/templates/template.xhtml">
+	
+	<f:metadata>
+		<f:viewParam name="key" value="#{accountDetailPage.key}"/>
+    	<f:viewAction action="#{accountDetailPage.viewAction}"/>
+	</f:metadata>
+	
+	<ui:define name="title">Account detail</ui:define>
+	
+	<ui:define name="content">
+		<ui:decorate template="/WEB-INF/fragment/contentPanel.xhtml">
+			<ui:define name="header">
+				<h:link value="Back" outcome="/account/index.xhtml"/>
+			</ui:define>
+			<ui:define name="content">
+				<p:outputLabel for="key" value="Key:" />
+				<h:outputText id="key" value="#{accountDetailPage.account.key}"/>
+				
+				<p:outputLabel for="name" value="Name:" />
+				<h:outputText id="name" value="#{accountDetailPage.account.name}"/>
+				
+				<p:outputLabel for="tags" value="Tags:" />
+				<w:tagsOutput id="tags" value="#{accountDetailPage.tagsHolder}"/>
+			</ui:define>
+			<ui:define name="footer">
+				<p:link value="Edit" outcome="/account/edit.xhtml">
+					<f:param name="key" value="#{accountDetailPage.account.key}"/>
+				</p:link>
+				<p:link value="Show weblink groups" outcome="/weblink-group/index.xhtml">
+					<f:param name="account" value="#{accountDetailPage.account.key}"/>
+				</p:link>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+	
+</ui:composition>

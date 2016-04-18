@@ -1,0 +1,10 @@
+Blaze Weblink - Link management service
+=================================================
+:projectname:     Blaze Weblink
+:lang:            en
+:authors:  	      Christian Beikov, Blazebit
+:email:           christian@blazebit.com
+:revnumber: 	  {version}
+:copyrighttext:   Copyright (C) 2016 Blazebit
+:new:             image:images/smallnew.png[]
+

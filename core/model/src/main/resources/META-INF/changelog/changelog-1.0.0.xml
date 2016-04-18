@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+	<changeSet author="Christian Beikov" id="1.0.0.Final"><createSequence sequenceName="WBLK_ACCOUNT_SEQ"/>
+        <createTable tableName="WBLK_ACCOUNT">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="WBLK_ACCOUNT_TAGS">
+            <column name="ACCOUNT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TAG" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="WBLK_WEBLINK">
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WEBLINK_GROUP_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATION_DATE" type="TIMESTAMP"/>
+            <column name="DISPATCHER_CONFIGURATION" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPIRATION_TIME" type="TIMESTAMP"/>
+            <column name="DISPATCHER_TYPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_URI" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="WBLK_WEBLINK_GROUP">
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATION_DATE" type="TIMESTAMP"/>
+            <column name="KEY_STRATEGY_CONFIGURATION" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_STRATEGY_TYPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MATCHER_CONFIGURATION" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MATCHER_TYPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="WBLK_WEBLINK_GROUP_SEQUENCE">
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="WBLK_WEBLINK_TAGS">
+            <column name="WEBLINK_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WEBLINK_GROUP_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TAG" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="ID" constraintName="WBLK_WEBLINK_GROUP_SEQUENCE_PK" tableName="WBLK_WEBLINK_GROUP_SEQUENCE"/>
+        <addPrimaryKey columnNames="ID" constraintName="WBLK_ACCOUNT_PK" tableName="WBLK_ACCOUNT"/>
+        <addPrimaryKey columnNames="ACCOUNT_ID, TAG" constraintName="WBLK_ACCOUNT_TAGS_PK" tableName="WBLK_ACCOUNT_TAGS"/>
+        <addPrimaryKey columnNames="ID" constraintName="WBLK_WEBLINK_GROUP_PK" tableName="WBLK_WEBLINK_GROUP"/>
+        <addPrimaryKey columnNames="WEBLINK_NAME, WEBLINK_GROUP_ID, TAG" constraintName="WBLK_WEBLINK_TAGS_PK" tableName="WBLK_WEBLINK_TAGS"/>
+        <addPrimaryKey columnNames="NAME, WEBLINK_GROUP_ID" constraintName="WBLK_WEBLINK_PK" tableName="WBLK_WEBLINK"/>
+        <addUniqueConstraint columnNames="KEY" constraintName="WBLK_ACCOUNT_UK_KEY" deferrable="false" disabled="false" initiallyDeferred="false" tableName="WBLK_ACCOUNT"/>
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="WBLK_WEBLINK_GROUP_SEQUENCE" constraintName="WBLK_WEBLINK_GROUP_SEQUENCE_FK_WEBLINK_GROUP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="WBLK_WEBLINK_GROUP"/>
+        <addForeignKeyConstraint baseColumnNames="ACCOUNT_ID" baseTableName="WBLK_ACCOUNT_TAGS" constraintName="WBLK_ACCOUNT_TAGS_FK_USER_ACCOUNT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="WBLK_ACCOUNT"/>
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="WBLK_WEBLINK_GROUP" constraintName="WBLK_BUCKET_FK_OWNER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="WBLK_ACCOUNT"/>
+        <addForeignKeyConstraint baseColumnNames="WEBLINK_GROUP_ID" baseTableName="WBLK_WEBLINK" constraintName="WBLK_WEBLINK_FK_WEBLINK_GROUP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="WBLK_WEBLINK_GROUP"/>
+        <addForeignKeyConstraint baseColumnNames="WEBLINK_NAME, WEBLINK_GROUP_ID" baseTableName="WBLK_WEBLINK_TAGS" constraintName="WBLK_WEBLINK_TAGS_FK_WEBLINK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="NAME, WEBLINK_GROUP_ID" referencedTableName="WBLK_WEBLINK"/>
+	</changeSet>
+</databaseChangeLog>
