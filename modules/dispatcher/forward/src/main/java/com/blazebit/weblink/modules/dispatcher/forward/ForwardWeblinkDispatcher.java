@@ -1,11 +1,13 @@
 package com.blazebit.weblink.modules.dispatcher.forward;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
@@ -28,8 +30,9 @@ public class ForwardWeblinkDispatcher extends AbstractWeblinkDispatcher implemen
 		ResponseBuilder b = Response.status(r.getStatus());
 		
 		b.type(r.getMediaType());
-		b.entity(r.getEntity());
+		b.entity(r.readEntity(InputStream.class));
 		
+		b.header(HttpHeaders.CONTENT_DISPOSITION, r.getHeaderString(HttpHeaders.CONTENT_DISPOSITION));
 		// Other headers?
 		
 		return b.build();

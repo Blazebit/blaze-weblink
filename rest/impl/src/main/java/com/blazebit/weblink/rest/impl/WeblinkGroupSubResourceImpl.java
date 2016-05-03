@@ -1,7 +1,9 @@
 package com.blazebit.weblink.rest.impl;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -11,12 +13,14 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import com.blazebit.persistence.CriteriaBuilder;
 import com.blazebit.persistence.view.EntityViewSetting;
 import com.blazebit.weblink.core.api.AccountDataAccess;
+import com.blazebit.weblink.core.api.WeblinkDataAccess;
+import com.blazebit.weblink.core.api.WeblinkDispatcherFactoryDataAccess;
 import com.blazebit.weblink.core.api.WeblinkGroupDataAccess;
 import com.blazebit.weblink.core.api.WeblinkGroupService;
 import com.blazebit.weblink.core.api.WeblinkKeyStrategyFactoryDataAccess;
@@ -31,8 +35,10 @@ import com.blazebit.weblink.rest.api.WeblinkGroupSubResource;
 import com.blazebit.weblink.rest.api.WeblinkGroupsResource;
 import com.blazebit.weblink.rest.api.WeblinkGroupsSubResource;
 import com.blazebit.weblink.rest.api.WeblinkSubResource;
+import com.blazebit.weblink.rest.impl.view.BulkWeblinkRepresentationView;
 import com.blazebit.weblink.rest.impl.view.WeblinkGroupRepresentationView;
 import com.blazebit.weblink.rest.model.BlazeWeblinkHeaders;
+import com.blazebit.weblink.rest.model.BulkWeblinkRepresentation;
 import com.blazebit.weblink.rest.model.WeblinkGroupRepresentation;
 import com.blazebit.weblink.rest.model.WeblinkGroupUpdateRepresentation;
 import com.blazebit.weblink.rest.model.WeblinkUpdateRepresentation;
@@ -60,6 +66,10 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	private WeblinkMatcherFactoryDataAccess weblinkMatcherFactoryDataAccess;
 	@Inject
 	private WeblinkService weblinkService;
+	@Inject
+	private WeblinkDataAccess weblinkDataAccess;
+	@Inject
+	private WeblinkDispatcherFactoryDataAccess weblinkDispatcherFactoryDataAccess;
 
 	public WeblinkGroupSubResourceImpl(long accountId, String bucketId) {
 		this.accountId = accountId;
@@ -150,6 +160,21 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	@Override
 	public WeblinkSubResource getWeblink(String key) {
 		return inject(new WeblinkSubResourceImpl(accountId, weblinkGroupId, key));
+	}
+
+	@Override
+	public List<? extends BulkWeblinkRepresentation> getAllWeblinks(List<String> weblinkKeys) {
+		EntityViewSetting<BulkWeblinkRepresentationView, CriteriaBuilder<BulkWeblinkRepresentationView>> setting = EntityViewSetting.create(BulkWeblinkRepresentationView.class);
+		setting.addOptionalParameter("dispatcherDataAccess", weblinkDispatcherFactoryDataAccess);
+		if (weblinkKeys == null) {
+			return weblinkDataAccess.findAllByWeblinkGroup(weblinkGroupId, setting);
+		} else {
+			List<WeblinkId> weblinkIds = new ArrayList<>();
+			for (String weblinkKey : weblinkKeys) {
+				weblinkIds.add(new WeblinkId(weblinkGroupId, weblinkKey));
+			}
+			return weblinkDataAccess.findByIds(weblinkIds, setting);
+		}
 	}
 
 }
