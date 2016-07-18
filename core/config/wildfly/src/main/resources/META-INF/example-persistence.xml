@@ -18,7 +18,7 @@ limitations under the License.
     <persistence-unit name="WeblinkMasterOnly" transaction-type="JTA">
     	<jta-data-source>java:jboss/datasources/WeblinkMasterOnly</jta-data-source>
     	
-		<mapping-file>META-INF/core-entities.xml</mapping-file>
+		<mapping-file>META-INF/blaze-weblink-core-entities.xml</mapping-file>
 		    	
     	<properties>
     		<!-- We don't use hbm2ddl at all since we have liquibase -->
@@ -37,7 +37,7 @@ limitations under the License.
     <persistence-unit name="WeblinkReadOnly" transaction-type="JTA">
     	<jta-data-source>java:jboss/datasources/WeblinkReadOnly</jta-data-source>
     	
-		<mapping-file>META-INF/core-entities.xml</mapping-file>
+		<mapping-file>META-INF/blaze-weblink-core-entities.xml</mapping-file>
 		    	
     	<properties>
     		<!-- We don't use hbm2ddl at all since we have liquibase -->

@@ -3,7 +3,7 @@
     <persistence-unit name="WeblinkTestMasterOnly" transaction-type="JTA">
     	<jta-data-source>java:jboss/datasources/WeblinkTestMasterOnly</jta-data-source>
     	
-		<mapping-file>META-INF/core-entities.xml</mapping-file>
+		<mapping-file>META-INF/blaze-weblink-core-entities.xml</mapping-file>
 		    	
     	<properties>
     		<!-- In our tests we use hibernate for the database setup -->
@@ -24,7 +24,7 @@
     <persistence-unit name="WeblinkTestReadOnly" transaction-type="JTA">
     	<jta-data-source>java:jboss/datasources/WeblinkTestReadOnly</jta-data-source>
     	
-		<mapping-file>META-INF/core-entities.xml</mapping-file>
+		<mapping-file>META-INF/blaze-weblink-core-entities.xml</mapping-file>
 		    	
     	<properties>
     		<!-- We don't use hbm2ddl at all since we have liquibase -->
