@@ -11,13 +11,14 @@
 	<f:metadata>
 		<f:viewParam name="account" value="#{weblinkIndexPage.account}"/>
 		<f:viewParam name="group" value="#{weblinkIndexPage.group}"/>
-<!--     	<f:viewAction action="#{bucketObjectIndexPage.viewAction}"/> -->
+     	<!--<f:viewAction action="#{weblinkIndexPage.viewAction}"/>-->
 	</f:metadata>
 	
 	<ui:define name="title">Weblinks</ui:define>
 	
 	<ui:define name="content">
 		<p:link value="Back" outcome="/weblink-group/detail.xhtml">
+			<f:param name="account" value="#{weblinkIndexPage.account}"/>
 			<f:param name="name" value="#{weblinkIndexPage.group}"/>
 		</p:link>
 		<br/>

@@ -9,12 +9,13 @@
 	template="/WEB-INF/templates/template.xhtml">
 	
 	<f:metadata>
+		<f:viewParam name="account" value="#{weblinkDetailPage.account}"/>
 		<f:viewParam name="group" value="#{weblinkDetailPage.group}"/>
 		<f:viewParam name="key" value="#{weblinkDetailPage.key}"/>
     	<f:viewAction action="#{weblinkDetailPage.viewAction}"/>
 	</f:metadata>
 	
-	<ui:define name="title">Bucket object detail</ui:define>
+	<ui:define name="title">Weblink detail</ui:define>
 	
 	<ui:define name="head">
 		<script type="text/javascript">
@@ -31,52 +32,52 @@
 	<ui:define name="content">
 		<ui:decorate template="/WEB-INF/fragment/contentPanel.xhtml">
 			<ui:define name="header">
-				<h:link value="Back" outcome="/object/index.xhtml">
+				<h:link value="Back" outcome="/weblink/index.xhtml">
+					<f:param name="account" value="#{weblinkDetailPage.account}"/>
 					<f:param name="group" value="#{weblinkDetailPage.group}"/>
-					<f:param name="parent" value="#{weblinkDetailPage.parent}"/>
 				</h:link>
 			</ui:define>
 			<ui:define name="content">
-				<p:outputLabel for="name" value="Name:" />
-				<h:outputText id="name" value="#{weblinkDetailPage.key}"/>
+				<p:outputLabel for="key" value="Key:" />
+				<h:outputLink id="key" value="#{weblinkDetailPage.keyLink}">
+					<h:outputText value="#{weblinkDetailPage.key}"/>
+				</h:outputLink>
 				
-				<p:outputLabel for="lastModified" value="Last modified:" />
-				<h:outputText id="lastModified" value="#{weblinkDetailPage.weblink.lastModified.time}">
+				<p:outputLabel for="creationDate" value="Creation date:" />
+				<h:outputText id="creationDate" value="#{weblinkDetailPage.weblink.creationDate.time}">
 					<f:convertDateTime dateStyle="medium"/>
 				</h:outputText>
 				
-				<p:outputLabel for="size" value="Size:" />
-				<h:outputText id="size" value="#{weblinkDetailPage.weblink.size}"/>
-				
-				<p:outputLabel for="contentType" value="Content type:" />
-				<h:outputText id="contentType" value="#{weblinkDetailPage.weblink.contentType}"/>
-				
-				<p:outputLabel for="contentDisposition" value="Content disposition: " />
-				<h:outputText id="contentDisposition" value="#{weblinkDetailPage.weblink.contentDisposition.toString()}"/>
-				
-				<p:outputLabel for="entityTag" value="Entity tag: " />
-				<h:outputText id="entityTag" value="#{weblinkDetailPage.weblink.entityTag}"/>
-				
-				<p:outputLabel for="storage" value="Storage:" />
-				<p:link id="storage" value="#{weblinkDetailPage.weblink.storageName}" outcome="/storage/detail.xhtml">
-					<f:param name="account" value="#{weblinkDetailPage.weblink.storageOwner}"/>
-					<f:param name="name" value="#{weblinkDetailPage.weblink.storageName}"/>
-				</p:link>
-				
-				<p:outputLabel for="downloadForm:content" value="Content:" />
-				<h:panelGroup id="contentGroup">
-					<h:form id="downloadForm">
-						<p:commandButton id="content" value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-							<p:fileDownload value="#{weblinkDetailPage.streamContent}" contentDisposition="attachement"/>
-						</p:commandButton>
-					</h:form>
+				<p:outputLabel for="targetUri" value="Target URI:" />
+				<h:outputText id="targetUri" value="#{weblinkDetailPage.weblink.targetUri}"/>
+
+				<p:outputLabel for="expirationTime" value="Expiration time:" />
+				<h:panelGroup>
+					<h:outputText id="expirationTime" value="#{weblinkDetailPage.weblink.expirationTime.time}" rendered="#{weblinkDetailPage.weblink.expirationTime != null}">
+						<f:convertDateTime type="both" dateStyle="medium" timeStyle="medium"/>
+					</h:outputText>
+					<h:outputText value="None" rendered="#{weblinkDetailPage.weblink.expirationTime == null}"/>
 				</h:panelGroup>
+
+				<p:outputLabel for="dispatcherType" value="Dispatcher type: " />
+				<h:outputText id="dispatcherType" value="#{weblinkDetailPage.weblink.dispatcherType}"/>
+
+				<p:outputLabel for="dispatcherConfiguration" value="Dispatcher configuration: " />
+				<w:configurationOutput id="dispatcherConfiguration" value="#{weblinkDetailPage.dispatcherConfigurationHolder}"/>
+
+				<p:outputLabel for="weblinkOwner" value="Owner: " />
+				<!--<h:outputText id="weblinkOwner" value="#{weblinkDetailPage.weblink.owner}"/>-->
+				<h:outputText id="weblinkOwner" value="#{''}" />
+				
+				<p:outputLabel for="securityGroup" value="Security group: " />
+				<h:outputText id="securityGroup" value="#{weblinkDetailPage.weblink.securityGroupName}"/>
 
 				<p:outputLabel for="tags" value="Tags:" />
 				<w:tagsOutput id="tags" value="#{weblinkDetailPage.tagsHolder}"/>
 			</ui:define>
 			<ui:define name="footer">
-				<p:link value="Edit" outcome="/object/edit.xhtml">
+				<p:link value="Edit" outcome="/weblink/edit.xhtml">
+					<f:param name="account" value="#{weblinkDetailPage.account}"/>
 					<f:param name="group" value="#{weblinkDetailPage.group}"/>
 					<f:param name="key" value="#{weblinkDetailPage.key}"/>
 				</p:link>

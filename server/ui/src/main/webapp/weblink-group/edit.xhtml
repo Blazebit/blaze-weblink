@@ -18,7 +18,9 @@
 	<ui:define name="content">
 		<ui:decorate template="/WEB-INF/fragment/contentForm.xhtml">
 			<ui:define name="header">
-				<h:link value="Back" outcome="/weblink-group/index.xhtml"/>
+				<h:link value="Back" outcome="/weblink-group/index.xhtml">
+					<f:param name="account" value="#{weblinkGroupDetailPage.account}"/>
+				</h:link>
 			</ui:define>
 			<ui:define name="content">
 				<p:outputLabel for="name" value="Name:" />

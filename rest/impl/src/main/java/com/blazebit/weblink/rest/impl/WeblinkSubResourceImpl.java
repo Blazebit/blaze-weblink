@@ -109,7 +109,7 @@ public class WeblinkSubResourceImpl extends AbstractResource implements WeblinkS
 	@Override
 	public Response put(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate, String ownerKey) {
 		Weblink weblink = new Weblink(weblinkId);
-
+		Account owner = new Account(accountId);
 		// TODO: implement owner of a weblink
 //		if (ownerKey == null || ownerKey.isEmpty() || ownerKey.equals(userContext.getAccountKey())) {
 //			weblink.setOwner(owner);
@@ -129,6 +129,11 @@ public class WeblinkSubResourceImpl extends AbstractResource implements WeblinkS
 //		WeblinkDispatcherFactory dispatcherFactory = weblinkDispatcherFactoryDataAccess.findByKey(weblink.getDispatcherType());
 		weblink.setDispatcherConfiguration(toMap(weblinkUpdate.getDispatcherConfiguration()));
 //		dispatcherFactory.createWeblinkDispatcher(weblink.getDispatcherConfiguration());
+
+		String securityGroupName = weblinkUpdate.getSecurityGroupName();
+		if (securityGroupName != null || !securityGroupName.isEmpty()) {
+			weblink.setWeblinkSecurityGroup(securityGroupDataAccess.findByOwnerAndName(owner, securityGroupName));
+		}
 
 		weblink.setTags(weblinkUpdate.getTags());
 		weblink.setTargetUri(URI.create(weblinkUpdate.getTargetUri()));

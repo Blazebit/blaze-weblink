@@ -74,7 +74,7 @@ public class Weblink extends BaseEntity<WeblinkId> {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name = "weblink_security_group_id", foreignKey = @ForeignKey(name = RdbmsConstants.PREFIX + "weblink_fk_weblink_security_group"), insertable = false, updatable = false)
+	@JoinColumn(name = "weblink_security_group_id", foreignKey = @ForeignKey(name = RdbmsConstants.PREFIX + "weblink_fk_weblink_security_group"))
 	public WeblinkSecurityGroup getWeblinkSecurityGroup() {
 		return weblinkSecurityGroup;
 	}

@@ -13,6 +13,8 @@ import java.util.Map;
 
 public interface WeblinkSecurityGroupDataAccess {
 
+	public WeblinkSecurityGroup findByOwnerAndName(Account account, String name);
+
 	public <T> T findByOwnerAndName(Account account, String name, EntityViewSetting<T, ? extends QueryBuilder<T, ?>> setting);
 	
 	public <T> List<T> findAllByAccountId(Long accountId, EntityViewSetting<T, ? extends QueryBuilder<T, ?>> setting);

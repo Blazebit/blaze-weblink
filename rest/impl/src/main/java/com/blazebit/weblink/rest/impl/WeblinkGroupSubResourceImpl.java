@@ -14,14 +14,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.blazebit.persistence.CriteriaBuilder;
 import com.blazebit.persistence.view.EntityViewSetting;
-import com.blazebit.weblink.core.api.AccountDataAccess;
-import com.blazebit.weblink.core.api.WeblinkDataAccess;
-import com.blazebit.weblink.core.api.WeblinkDispatcherFactoryDataAccess;
-import com.blazebit.weblink.core.api.WeblinkGroupDataAccess;
-import com.blazebit.weblink.core.api.WeblinkGroupService;
-import com.blazebit.weblink.core.api.WeblinkKeyStrategyFactoryDataAccess;
-import com.blazebit.weblink.core.api.WeblinkMatcherFactoryDataAccess;
-import com.blazebit.weblink.core.api.WeblinkService;
+import com.blazebit.weblink.core.api.*;
 import com.blazebit.weblink.core.model.jpa.Account;
 import com.blazebit.weblink.core.model.jpa.Weblink;
 import com.blazebit.weblink.core.model.jpa.WeblinkGroup;
@@ -66,6 +59,8 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	private WeblinkDataAccess weblinkDataAccess;
 	@Inject
 	private WeblinkDispatcherFactoryDataAccess weblinkDispatcherFactoryDataAccess;
+	@Inject
+	private WeblinkSecurityGroupDataAccess securityGroupDataAccess;
 
 	public WeblinkGroupSubResourceImpl(long accountId, String bucketId) {
 		this.accountId = accountId;
@@ -137,12 +132,34 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	}
 
 	@Override
-	public Response createWeblink(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate) {
+	public Response createWeblink(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate, String ownerKey) {
 		Weblink weblink = new Weblink(new WeblinkId(weblinkGroupId, null));
+		Account owner = new Account(accountId);
+
 		weblink.setWeblinkGroup(new WeblinkGroup(weblinkGroupId));
+
+		// TODO: implement owner of a weblink
+		//		if (ownerKey == null || ownerKey.isEmpty() || ownerKey.equals(userContext.getAccountKey())) {
+		//			weblink.setOwner(owner);
+		//		} else if (userContext.getAccountRoles().contains(Role.ADMIN)) {
+		//			Account owner = accountDataAccess.findByKey(ownerKey);
+		//
+		//			if (owner == null) {
+		//				throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).header(BlazeWeblinkHeaders.ERROR_CODE, "AccountNotFound").type(MediaType.TEXT_PLAIN_TYPE).entity("Account does not exist").build());
+		//			}
+		//
+		//			weblink.setOwner(owner);
+		//		} else {
+		//			throw new WebApplicationException(Response.status(Response.Status.FORBIDDEN).type(MediaType.TEXT_PLAIN_TYPE).entity("Only admins may change the owner").build());
+		//		}
 
 		weblink.setDispatcherType(weblinkUpdate.getDispatcherType());
 		weblink.setDispatcherConfiguration(toMap(weblinkUpdate.getDispatcherConfiguration()));
+
+		String securityGroupName = weblinkUpdate.getSecurityGroupName();
+		if (securityGroupName != null && !securityGroupName.isEmpty()) {
+			weblink.setWeblinkSecurityGroup(securityGroupDataAccess.findByOwnerAndName(owner, securityGroupName));
+		}
 		
 		weblink.setTags(weblinkUpdate.getTags());
 		weblink.setTargetUri(URI.create(weblinkUpdate.getTargetUri()));
@@ -166,7 +183,7 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	public List<BulkWeblinkRepresentation> getAllWeblinks(List<String> weblinkKeys) {
 		EntityViewSetting<BulkWeblinkRepresentationView, CriteriaBuilder<BulkWeblinkRepresentationView>> setting = EntityViewSetting.create(BulkWeblinkRepresentationView.class);
 		setting.addOptionalParameter("dispatcherDataAccess", weblinkDispatcherFactoryDataAccess);
-		if (weblinkKeys == null) {
+		if (weblinkKeys == null || weblinkKeys.isEmpty()) {
 			return (List<BulkWeblinkRepresentation>) (List<?>) weblinkDataAccess.findAllByWeblinkGroup(weblinkGroupId, setting);
 		} else {
 			List<WeblinkId> weblinkIds = new ArrayList<>();

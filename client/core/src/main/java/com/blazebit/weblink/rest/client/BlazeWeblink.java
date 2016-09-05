@@ -4,6 +4,8 @@ import com.blazebit.weblink.rest.api.*;
 
 public interface BlazeWeblink {
 
+	public String getExternalLink(String weblinkGroupName, String weblinkKey);
+
 	public AdminResource admin();
 
 	public AccountsResource accounts();

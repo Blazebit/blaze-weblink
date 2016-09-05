@@ -40,6 +40,10 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>blaze-weblink-modules-dispatcher-forward</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>blaze-weblink-modules-authentication-api</artifactId>
 		</dependency>
 		<dependency>

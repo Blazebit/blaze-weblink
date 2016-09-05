@@ -11,8 +11,11 @@ import com.blazebit.weblink.server.faces.tag.TagsHolder;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +29,9 @@ public class WeblinkBasePage implements Serializable {
 	@Inject
 	protected FacesContext facesContext;
 
+	private Date expirationTime;
 	private String ownerAccount;
+	private String keyLink;
 	protected String group;
 	protected String key;
 	protected String account;
@@ -48,7 +53,7 @@ public class WeblinkBasePage implements Serializable {
 					tagsHolder.setTags(weblink.getTags());
 					dispatcherConfigurationHolder.setConfiguration(weblink.getDispatcherConfiguration());
 					init();
-					return "";
+					return null;
 				}
 			}
 
@@ -71,11 +76,34 @@ public class WeblinkBasePage implements Serializable {
 	public void put() {
 		WeblinkUpdateRepresentation newWeblink = new WeblinkUpdateRepresentation();
 		newWeblink.setTargetUri(weblink.getTargetUri());
-		newWeblink.setExpirationTime(weblink.getExpirationTime());
+
+		if (expirationTime != null) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(expirationTime);
+			newWeblink.setExpirationTime(c);
+		}
+
 		newWeblink.setDispatcherType(weblink.getDispatcherType());
 		newWeblink.setDispatcherConfiguration(dispatcherConfigurationHolder.getConfiguration());
+		newWeblink.setSecurityGroupName(weblink.getSecurityGroupName());
 		newWeblink.setTags(tagsHolder.getTags());
-		client.weblinkGroups().getGroup(group).getWeblink(key).put(newWeblink, ownerAccount);
+
+		if (key == null || key.isEmpty()) {
+			Response r = client.weblinkGroups().getGroup(group).createWeblink(newWeblink, ownerAccount);
+			if (r.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL) {
+				throw new IllegalArgumentException(r.readEntity(String.class));
+			}
+			String path = r.getLocation().getPath();
+			if (path.endsWith("/")) {
+				path = path.substring(0, path.length() - 1);
+			}
+			int idx = path.lastIndexOf("/");
+			path = path.substring(idx + 1);
+			key = path;
+		} else {
+			client.weblinkGroups().getGroup(group).getWeblink(key).put(newWeblink, ownerAccount);
+		}
+
 		weblink = newWeblink;
 	}
 	
@@ -101,6 +129,11 @@ public class WeblinkBasePage implements Serializable {
 
 	public void setKey(String key) {
 		this.key = key;
+		if (key != null && !key.isEmpty()) {
+			keyLink = client.getExternalLink(group, key);
+		} else {
+			keyLink = null;
+		}
 	}
 
 	public String getAccount() {
@@ -119,7 +152,19 @@ public class WeblinkBasePage implements Serializable {
 		this.ownerAccount = ownerAccount;
 	}
 
+	public Date getExpirationTime() {
+		return expirationTime;
+	}
+
+	public void setExpirationTime(Date expirationTime) {
+		this.expirationTime = expirationTime;
+	}
+
 	public ConfigurationHolder getDispatcherConfigurationHolder() {
 		return dispatcherConfigurationHolder;
+	}
+
+	public String getKeyLink() {
+		return keyLink;
 	}
 }

@@ -18,6 +18,7 @@ import com.blazebit.weblink.core.api.spi.WeblinkKeyStrategyFactory;
 import com.blazebit.weblink.core.model.jpa.Weblink;
 import com.blazebit.weblink.core.model.jpa.WeblinkGroup;
 import com.blazebit.weblink.core.model.jpa.WeblinkId;
+import com.blazebit.weblink.core.model.jpa.WeblinkSecurityGroup;
 
 @Stateless
 public class WeblinkServiceImpl extends AbstractService implements WeblinkService {
@@ -40,8 +41,7 @@ public class WeblinkServiceImpl extends AbstractService implements WeblinkServic
 			.getQuery()
 			.setLockMode(LockModeType.PESSIMISTIC_WRITE)
 			.getResultList();
-		;
-		
+
 		// Fallback to create
 		if (results.isEmpty()) {
 			createObject(weblink);
@@ -57,6 +57,8 @@ public class WeblinkServiceImpl extends AbstractService implements WeblinkServic
 		currentWeblink.setExpirationTime(weblink.getExpirationTime());
 		currentWeblink.setTags(weblink.getTags());
 		currentWeblink.setTargetUri(weblink.getTargetUri());
+		// TODO: do some checks
+		currentWeblink.setWeblinkSecurityGroup(em.getReference(WeblinkSecurityGroup.class, weblink.getWeblinkSecurityGroup().getId()));
 
 		if (!currentWeblink.getDispatcherType().equals(weblink.getDispatcherType())
 				|| !currentWeblink.getDispatcherConfiguration().equals(weblink.getDispatcherConfiguration())) {
@@ -110,6 +112,8 @@ public class WeblinkServiceImpl extends AbstractService implements WeblinkServic
 		// check if dispatcher is valid and can be built
 		WeblinkDispatcherFactory dispatcherFactory = weblinkDispatcherFactoryDataAccess.findByKey(weblink.getDispatcherType());
 		dispatcherFactory.createWeblinkDispatcher(weblink.getDispatcherConfiguration());
+
+		weblink.setWeblinkSecurityGroup(em.getReference(WeblinkSecurityGroup.class, weblink.getWeblinkSecurityGroup().getId()));
 
 		em.persist(weblink);
 		em.flush();

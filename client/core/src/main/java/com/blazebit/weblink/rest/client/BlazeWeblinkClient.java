@@ -10,6 +10,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
 
 import com.blazebit.weblink.rest.api.*;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
@@ -45,6 +46,18 @@ public class BlazeWeblinkClient implements BlazeWeblink, Serializable {
 
 	public static BlazeWeblink getInstance(String serverUrl, ClientRequestFilter... requestFilters) {
 		return new BlazeWeblinkClient(serverUrl, requestFilters);
+	}
+
+	@Override
+	public String getExternalLink(String weblinkGroupName, String weblinkKey) {
+		return UriBuilder.fromUri(serverUrl)
+				.path(WeblinkGroupsResource.class)
+				.path(WeblinkGroupsResource.class, "get")
+				.path(WeblinkGroupsSubResource.class, "getGroup")
+				.path(WeblinkGroupSubResource.class, "getWeblink")
+				.path(WeblinkSubResource.class, "dispatch")
+				.build(weblinkGroupName, weblinkKey)
+				.toString();
 	}
 
 	@Override

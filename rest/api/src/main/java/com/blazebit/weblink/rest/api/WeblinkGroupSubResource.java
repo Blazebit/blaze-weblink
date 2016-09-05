@@ -49,7 +49,7 @@ public interface WeblinkGroupSubResource {
 	@POST
 	@Path("weblink")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createWeblink(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate);
+	public Response createWeblink(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate, @HeaderParam("x-blz-owner-key") String ownerKey);
 	
 	@Path("{key}")
 	public WeblinkSubResource getWeblink(@PathParam("key") String key);

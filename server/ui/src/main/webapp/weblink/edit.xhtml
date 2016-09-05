@@ -9,12 +9,13 @@
 	template="/WEB-INF/templates/template.xhtml">
 	
 	<f:metadata>
+		<f:viewParam name="account" value="#{weblinkEditPage.account}"/>
 		<f:viewParam name="group" value="#{weblinkEditPage.group}"/>
 		<f:viewParam name="key" value="#{weblinkEditPage.key}"/>
     	<f:viewAction action="#{weblinkEditPage.viewAction}"/>
 	</f:metadata>
 	
-	<ui:define name="title">Bucket object edit</ui:define>
+	<ui:define name="title">Weblink edit</ui:define>
 	
 	<ui:define name="head">
 		<script type="text/javascript">
@@ -34,62 +35,52 @@
 			<p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
 				<p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
 			</p:dialog>
-				<h:link value="Back" outcome="/object/index.xhtml" rendered="#{weblinkEditPage.parent != null}">
-					<f:param name="group" value="#{weblinkEditPage.group}"/>
-					<f:param name="parent" value="#{weblinkEditPage.parent}"/>
-				</h:link>
-				<h:link value="Back" outcome="/object/index.xhtml" rendered="#{weblinkEditPage.parent == null}">
+				<h:link value="Back" outcome="/weblink/index.xhtml">
+					<f:param name="account" value="#{weblinkEditPage.account}"/>
 					<f:param name="group" value="#{weblinkEditPage.group}"/>
 				</h:link>
 			</ui:define>
 			<ui:define name="content">
-				<p:outputLabel for="name" value="Name:" />
-				<h:outputText id="name" value="#{weblinkEditPage.key}" />
-				
-				<p:outputLabel for="contentType" value="Content type:" />
-				<p:inputText id="contentType" value="#{weblinkEditPage.weblink.contentType}" required="true" requiredMessage="Content type is required." />
-				
-				<p:outputLabel for="externalContentKey" value="External content key:" />
-				<p:inputText id="externalContentKey" value="#{weblinkEditPage.weblink.externalContentKey}" />
-				
-				<p:outputLabel for="contentDisposition" value="Content disposition:" />
-				<p:selectOneMenu id="contentDisposition" value="#{weblinkEditPage.contentDisposition}">
-					<p:ajax process="@this" update="@this contentDispositionFilenameRow"/>
-					<f:selectItem itemValue="#{null}" itemLabel="None" />
-					<f:selectItem itemValue="inline" itemLabel="Inline" />
-					<f:selectItem itemValue="attachement" itemLabel="Attachement" />
+				<p:outputLabel for="key" value="Key:" />
+				<h:outputLink id="key" value="#{weblinkEditPage.keyLink}">
+					<h:outputText value="#{weblinkEditPage.key}"/>
+				</h:outputLink>
+
+				<p:outputLabel for="targetUri" value="Target URI:" />
+				<p:inputText id="targetUri" value="#{weblinkEditPage.weblink.targetUri}" required="true" requiredMessage="Target URI is required." />
+
+				<p:outputLabel for="expirationTime" value="Expiration time:" />
+				<p:calendar id="expirationTime" value="#{weblinkEditPage.expirationTime}" />
+
+				<p:outputLabel for="dispatcherType" value="Dispatcher type: " />
+				<p:selectOneMenu id="dispatcherType" value="#{weblinkEditPage.weblink.dispatcherType}" required="true" requiredMessage="Dispatcher type is required.">
+					<p:ajax process="@this" update="@this dispatcherConfigurationRow" listener="#{weblinkEditPage.onDispatcherTypeChanged()}"/>
+					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+					<f:selectItems value="#{dispatcherTypeItems}"/>
 				</p:selectOneMenu>
-				
-				<p:outputLabel for="contentDispositionFilename" value="Content disposition filename: " />
-				<h:panelGroup id="contentDispositionFilenameRow">
-					<h:outputText value="Filename is only possible with content disposition" rendered="#{weblinkEditPage.contentDisposition == null}"/>
-					<p:inputText id="contentDispositionFilename" value="#{weblinkEditPage.contentDispositionFilename}" required="true" requiredMessage="Content disposition filename is required." rendered="#{weblinkEditPage.contentDisposition != null}"/>
+
+				<p:outputLabel for="dispatcherConfiguration" value="Dispatcher configuration: " />
+				<h:panelGroup id="dispatcherConfigurationRow">
+					<h:outputText value="Select type first" rendered="#{weblinkEditPage.weblink.dispatcherType == null}"/>
+					<w:configurationInput id="dispatcherConfiguration" value="#{weblinkEditPage.dispatcherConfigurationHolder}" rendered="#{weblinkEditPage.weblink.dispatcherType != null}"/>
 				</h:panelGroup>
-				
-				<p:outputLabel for="storageOwner" value="Storage owner: " />
-				<p:selectOneMenu id="storageOwner" value="#{weblinkEditPage.weblink.storageOwner}" required="true" requiredMessage="Storage owner is required.">
-					<p:ajax process="@this" update="@this storageRow" listener="#{weblinkEditPage.onOwnerAccountChanged()}"/>
+
+				<p:outputLabel for="weblinkOwner" value="Owner: " />
+				<p:selectOneMenu id="weblinkOwner" value="#{weblinkEditPage.ownerAccount}" required="true" requiredMessage="Weblink owner is required.">
+					<p:ajax process="@this" update="@this securityGroupRow" listener="#{weblinkEditPage.onOwnerAccountChanged()}"/>
 					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
 					<f:selectItems value="#{accountItems}"/>
 				</p:selectOneMenu>
-				
-				<p:outputLabel for="storage" value="Storage: " />
-				<h:panelGroup id="storageRow">
-					<h:outputText value="Select account first" rendered="#{weblinkEditPage.weblink.storageOwner == null}"/>
-					<p:selectOneMenu id="storage" value="#{weblinkEditPage.weblink.storageName}" required="true" requiredMessage="Storage is required." rendered="#{weblinkEditPage.weblink.storageOwner != null}">
-						<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+
+				<p:outputLabel for="securityGroup" value="Security group: " />
+				<h:panelGroup id="securityGroupRow">
+					<h:outputText value="Select weblink owner first" rendered="#{weblinkEditPage.ownerAccount == null}"/>
+					<p:selectOneMenu id="securityGroup" value="#{weblinkEditPage.weblink.securityGroupName}" rendered="#{weblinkEditPage.ownerAccount != null}">
+						<f:selectItem itemValue="#{null}" itemLabel="None" />
 						<f:selectItems value="#{weblinkEditPage.securityGroupItems}"/>
 					</p:selectOneMenu>
 				</h:panelGroup>
-				
-				<p:outputLabel for="content" value="Content:" />
-				<h:panelGroup id="contentGroup">
-					<p:commandButton id="currentContent" value="Download" ajax="false" immediate="true" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-						<p:fileDownload value="#{weblinkEditPage.streamContent}" contentDisposition="attachement"/>
-					</p:commandButton>
-					<p:fileUpload id="content" fileUploadListener="#{weblinkEditPage.handleFileUpload}" fileLimit="1" mode="advanced" dragDropSupport="true" update="contentGroup" />
-				</h:panelGroup>
-				
+
 				<p:outputLabel for="tags" value="Tags:" />
 				<w:tagsInput id="tags" value="#{weblinkEditPage.tagsHolder}"/>
 			</ui:define>

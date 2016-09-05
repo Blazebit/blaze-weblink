@@ -24,6 +24,21 @@ public class WeblinkSecurityGroupDataAccessImpl extends AbstractDataAccess imple
 	private WeblinkSecurityConstraintFactoryDataAccess securityConstraintFactoryDataAccess;
 
 	@Override
+	public WeblinkSecurityGroup findByOwnerAndName(Account account, String securityGroupName) {
+		if (account == null) {
+			return null;
+		}
+		try {
+			CriteriaBuilder<WeblinkSecurityGroup> cb =  cbf.create(em, WeblinkSecurityGroup.class)
+					.where("name").eq(securityGroupName)
+					.where("owner.id").eq(account.getId());
+			return cb.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		}
+	}
+
+	@Override
 	public <T> T findByOwnerAndName(Account account, String securityGroupName, EntityViewSetting<T, ? extends QueryBuilder<T, ?>> setting) {
 		if (account == null) {
 			return null;

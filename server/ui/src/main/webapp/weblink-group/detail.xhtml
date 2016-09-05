@@ -9,6 +9,7 @@
 	template="/WEB-INF/templates/template.xhtml">
 	
 	<f:metadata>
+		<f:viewParam name="account" value="#{weblinkGroupDetailPage.account}"/>
 		<f:viewParam name="name" value="#{weblinkGroupDetailPage.name}"/>
     	<f:viewAction action="#{weblinkGroupDetailPage.viewAction}"/>
 	</f:metadata>
@@ -18,7 +19,9 @@
 	<ui:define name="content">
 		<ui:decorate template="/WEB-INF/fragment/contentPanel.xhtml">
 			<ui:define name="header">
-				<h:link value="Back" outcome="/weblink-group/index.xhtml"/>
+				<h:link value="Back" outcome="/weblink-group/index.xhtml">
+					<f:param name="account" value="#{weblinkGroupDetailPage.account}"/>
+				</h:link>
 			</ui:define>
 			<ui:define name="content">
 				<p:outputLabel for="name" value="Name:" />

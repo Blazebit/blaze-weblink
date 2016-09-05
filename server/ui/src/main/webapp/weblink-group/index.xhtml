@@ -24,6 +24,7 @@
 		<p:dataTable value="#{weblinkGroupList}" var="weblinkGroup">
 			<p:column headerText="Name">
 				<p:link value="#{weblinkGroup.name}" outcome="/weblink-group/detail.xhtml">
+					<f:param name="account" value="#{weblinkGroupIndexPage.account}"/>
 					<f:param name="name" value="#{weblinkGroup.name}"/>
 				</p:link>
 			</p:column>

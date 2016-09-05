@@ -15,16 +15,16 @@
 
 	<cc:implementation>
 		<div id="#{cc.clientId}">
-			<p:dataTable id="table" binding="#{cc.table}" value="#{cc.attrs.value.configurationEntries}" var="entry" styleClass="hide-column-names">
-	            <p:column><h:outputText value="#{entry.label}"/></p:column>
-	            <p:column>
+			<h:dataTable id="table" binding="#{cc.table}" value="#{cc.attrs.value.configurationEntries}" var="entry" styleClass="hide-column-names">
+	            <h:column><h:outputText value="#{entry.label}"/></h:column>
+	            <h:column>
 	            	<p:inputText value="#{entry.value}" rendered="#{entry.isType('text')}"/>
 	            	<p:password value="#{entry.value}" rendered="#{entry.isType('password')}"/>
 	            	<p:spinner value="#{entry.value}" rendered="#{entry.isType('integer')}" converter="integerConfigurationEntryConverter"/>
 	            	<p:selectBooleanCheckbox value="#{entry.value}" rendered="#{entry.isType('boolean')}" converter="booleanConfigurationEntryConverter"/>
-	            </p:column>
-	            <p:column><h:outputText value="#{entry.description}"/></p:column>
-	        </p:dataTable>
+	            </h:column>
+	            <h:column><h:outputText value="#{entry.description}"/></h:column>
+	        </h:dataTable>
 		</div>
 	</cc:implementation>
 </ui:composition>

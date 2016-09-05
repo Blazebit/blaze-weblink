@@ -9,10 +9,11 @@
 	template="/WEB-INF/templates/template.xhtml">
 	
 	<f:metadata>
+		<f:viewParam name="account" value="#{weblinkAddPage.account}"/>
 		<f:viewParam name="group" value="#{weblinkAddPage.group}"/>
 	</f:metadata>
 	
-	<ui:define name="title">Add new group object</ui:define>
+	<ui:define name="title">Add new weblink</ui:define>
 	
 	<ui:define name="head">
 		<script type="text/javascript">
@@ -29,19 +30,17 @@
 	<ui:define name="content">
 		<ui:decorate template="/WEB-INF/fragment/contentForm.xhtml">
 			<ui:define name="header">
-				<h:link value="Back" outcome="/object/index.xhtml">
+				<h:link value="Back" outcome="/weblink-group/index.xhtml">
+					<f:param name="account" value="#{weblinkAddPage.account}"/>
 					<f:param name="group" value="#{weblinkAddPage.group}"/>
 				</h:link>
 			</ui:define>
 			<ui:define name="content">
-				<p:outputLabel for="name" value="Name:" />
-				<p:inputText id="name" value="#{weblinkAddPage.key}" required="true" requiredMessage="Name is required." />
-				
 				<p:outputLabel for="targetUri" value="Target URI:" />
 				<p:inputText id="targetUri" value="#{weblinkAddPage.weblink.targetUri}" required="true" requiredMessage="Target URI is required." />
 				
 				<p:outputLabel for="expirationTime" value="Expiration time:" />
-				<p:calendar id="expirationTime" value="#{weblinkAddPage.weblink.expirationTime.time}" />
+				<p:calendar id="expirationTime" value="#{weblinkAddPage.expirationTime}" />
 
 				<p:outputLabel for="dispatcherType" value="Dispatcher type: " />
 				<p:selectOneMenu id="dispatcherType" value="#{weblinkAddPage.weblink.dispatcherType}" required="true" requiredMessage="Dispatcher type is required.">

@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,12 +25,12 @@ public class WeblinkAddPage extends WeblinkBasePage {
 	
 	public String add() {
 		try {
-			if (group != null && !group.isEmpty() && key != null && !key.isEmpty()) {
+			if (group != null && !group.isEmpty()) {
 				put();
-				return "/weblink/detail.xhtml?group=" + group + "&key=" + key + "&faces-redirect=true";
+				return "/weblink/detail.xhtml?account=" + account + "&group=" + group + "&key=" + key + "&faces-redirect=true";
 			}
 
-			String message = "Invalid empty key!";
+			String message = "Invalid empty group!";
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 			return null;
 		} catch (RuntimeException ex) {
@@ -41,7 +42,7 @@ public class WeblinkAddPage extends WeblinkBasePage {
 	}
 
 	public void onOwnerAccountChanged() {
-		if (account == null) {
+		if (account == null || account.isEmpty()) {
 			securityGroupItems = new ArrayList<>(0);
 			return;
 		}

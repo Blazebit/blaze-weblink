@@ -15,12 +15,12 @@ public class IpRangeSecurityConstraint implements WeblinkSecurityConstraint {
 
     private static final Logger LOG = Logger.getLogger(IpRangeSecurityConstraint.class.getName());
 
-    private final long lowIp;
-    private final long highIp;
+    private final long networkBaseAddr;
+    private final long netmaskAddr;
 
-    public IpRangeSecurityConstraint(long lowIp, long highIp) {
-        this.lowIp = lowIp;
-        this.highIp = highIp;
+    public IpRangeSecurityConstraint(long networkBaseAddr, long netmaskAddr) {
+        this.networkBaseAddr = networkBaseAddr;
+        this.netmaskAddr = netmaskAddr;
     }
 
     @Inject
@@ -37,7 +37,7 @@ public class IpRangeSecurityConstraint implements WeblinkSecurityConstraint {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        if (clientIp >= lowIp && clientIp <= highIp) {
+        if (networkBaseAddr == (clientIp & netmaskAddr)) {
             return null;
         }
 
@@ -67,9 +67,7 @@ public class IpRangeSecurityConstraint implements WeblinkSecurityConstraint {
             throw new IllegalArgumentException("Invalid netmask address!", e);
         }
 
-        long lowIp = networkAddrLong & netmaskAddrLong;
-        long highIp = networkAddrLong | ~(netmaskAddrLong);
-        return new IpRangeSecurityConstraint(lowIp, highIp);
+        return new IpRangeSecurityConstraint(networkAddrLong & netmaskAddrLong, netmaskAddrLong);
     }
 
     private static long ipToLong(InetAddress ip) {
