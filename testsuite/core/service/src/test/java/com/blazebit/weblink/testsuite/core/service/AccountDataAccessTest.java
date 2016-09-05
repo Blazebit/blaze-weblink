@@ -65,7 +65,7 @@ public class AccountDataAccessTest extends AbstractContainerTest {
 	}
 	
 	/**************************
-	 * findById(long)
+	 * findByOwnerAndName(long)
 	 **************************/
 
 	@Test

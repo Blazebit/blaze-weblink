@@ -31,6 +31,7 @@ public class Weblink extends BaseEntity<WeblinkId> {
 	
 	private Calendar creationDate;
 	private WeblinkGroup weblinkGroup;
+	private WeblinkSecurityGroup weblinkSecurityGroup;
 	private URI targetUri;
 	private String dispatcherType;
 	private Calendar expirationTime;
@@ -70,6 +71,16 @@ public class Weblink extends BaseEntity<WeblinkId> {
 	
 	public void setWeblinkGroup(WeblinkGroup weblinkGroup) {
 		this.weblinkGroup = weblinkGroup;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "weblink_security_group_id", foreignKey = @ForeignKey(name = RdbmsConstants.PREFIX + "weblink_fk_weblink_security_group"), insertable = false, updatable = false)
+	public WeblinkSecurityGroup getWeblinkSecurityGroup() {
+		return weblinkSecurityGroup;
+	}
+
+	public void setWeblinkSecurityGroup(WeblinkSecurityGroup weblinkSecurityGroup) {
+		this.weblinkSecurityGroup = weblinkSecurityGroup;
 	}
 
 	@NotNull

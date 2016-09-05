@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://java.sun.com/jsf/composite/weblink"
+	template="/WEB-INF/templates/template.xhtml">
+	
+	<f:metadata>
+		<f:viewParam name="name" value="#{weblinkGroupEditPage.name}"/>
+    	<f:viewAction action="#{weblinkGroupEditPage.viewAction}"/>
+	</f:metadata>
+	
+	<ui:define name="title">Weblink group edit</ui:define>
+	
+	<ui:define name="content">
+		<ui:decorate template="/WEB-INF/fragment/contentForm.xhtml">
+			<ui:define name="header">
+				<h:link value="Back" outcome="/weblink-group/index.xhtml"/>
+			</ui:define>
+			<ui:define name="content">
+				<p:outputLabel for="name" value="Name:" />
+				<h:outputText id="name" value="#{weblinkGroupEditPage.name}" />
+				
+				<p:outputLabel for="account" value="Account: " />
+				<p:selectOneMenu id="account" value="#{weblinkGroupEditPage.account}" required="true" requiredMessage="Account is required.">
+					<f:selectItems value="#{accountItems}"/>
+				</p:selectOneMenu>
+
+				<p:outputLabel for="keyStrategyType" value="Key strategy type: " />
+				<p:selectOneMenu id="keyStrategyType" value="#{weblinkGroupEditPage.weblinkGroup.keyStrategyType}" required="true" requiredMessage="Key strategy type is required.">
+					<p:ajax process="@this" update="@this keyStrategyConfigurationRow" listener="#{weblinkGroupEditPage.onKeyStrategyTypeChanged()}"/>
+					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+					<f:selectItems value="#{keyStrategyItems}"/>
+				</p:selectOneMenu>
+
+				<p:outputLabel for="keyStrategyConfiguration" value="Key strategy configuration: " />
+				<h:panelGroup id="keyStrategyConfigurationRow">
+					<h:outputText value="Select type first" rendered="#{weblinkGroupEditPage.weblinkGroup.keyStrategyType == null}"/>
+					<w:configurationInput id="keyStrategyConfiguration" value="#{weblinkGroupEditPage.keyStrategyConfigurationHolder}" rendered="#{weblinkGroupEditPage.weblinkGroup.keyStrategyType != null}"/>
+				</h:panelGroup>
+
+				<p:outputLabel for="matcherType" value="Matcher type: " />
+				<p:selectOneMenu id="matcherType" value="#{weblinkGroupEditPage.weblinkGroup.matcherType}" required="true" requiredMessage="Matcher type is required.">
+					<p:ajax process="@this" update="@this matcherConfigurationRow" listener="#{weblinkGroupEditPage.onMatcherTypeChanged()}"/>
+					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+					<f:selectItems value="#{matcherTypeItems}"/>
+				</p:selectOneMenu>
+
+				<p:outputLabel for="matcherConfiguration" value="Matcher configuration: " />
+				<h:panelGroup id="matcherConfigurationRow">
+					<h:outputText value="Select type first" rendered="#{weblinkGroupEditPage.weblinkGroup.matcherType == null}"/>
+					<w:configurationInput id="matcherConfiguration" value="#{weblinkGroupEditPage.matcherConfigurationHolder}" rendered="#{weblinkGroupEditPage.weblinkGroup.matcherType != null}"/>
+				</h:panelGroup>
+			</ui:define>
+			<ui:define name="footer">
+				<p:commandButton value="Update" action="#{weblinkGroupEditPage.update()}" ajax="false"/>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+	
+</ui:composition>

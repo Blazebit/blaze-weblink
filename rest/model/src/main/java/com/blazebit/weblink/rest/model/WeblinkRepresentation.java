@@ -16,8 +16,8 @@ public class WeblinkRepresentation extends WeblinkUpdateRepresentation<Configura
 		super();
 	}
 
-	public WeblinkRepresentation(String targetUri, Calendar expirationTime, String dispatcherType, Set<ConfigurationTypeConfigElementRepresentation> dispatcherConfiguration, Map<String, String> tags, Calendar creationDate) {
-		super(targetUri, expirationTime, dispatcherType, dispatcherConfiguration, tags);
+	public WeblinkRepresentation(String targetUri, Calendar expirationTime, String securityGroupName, String dispatcherType, Set<ConfigurationTypeConfigElementRepresentation> dispatcherConfiguration, Map<String, String> tags, Calendar creationDate) {
+		super(targetUri, expirationTime, securityGroupName, dispatcherType, dispatcherConfiguration, tags);
 		this.creationDate = creationDate;
 	}
 

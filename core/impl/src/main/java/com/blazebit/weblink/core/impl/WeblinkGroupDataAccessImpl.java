@@ -56,9 +56,9 @@ public class WeblinkGroupDataAccessImpl extends AbstractDataAccess implements We
 				cb.where("links.id.name").gt(marker);
 			}
 			
-			// TODO: implement limit and marker in query and also for passing into entity views
+			// TODO: implement constraint and marker in query and also for passing into entity views
 			setting.addOptionalParameter("prefix", prefix);
-			setting.addOptionalParameter("limit", limit);
+			setting.addOptionalParameter("constraint", limit);
 			setting.addOptionalParameter("marker", marker);
 			cb.setMaxResults(limit);
 			return evm.applySetting(setting, cb).getSingleResult();

@@ -28,6 +28,9 @@ public interface AccountSubResource {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response put(AccountUpdateRepresentation account);
 
+	@Path("security-groups")
+	public WeblinkSecurityGroupsSubResource getSecurityGroups();
+
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("weblink-groups")

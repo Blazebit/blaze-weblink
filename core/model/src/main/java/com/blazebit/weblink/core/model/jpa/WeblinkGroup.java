@@ -41,9 +41,10 @@ public class WeblinkGroup extends BaseEntity<String> {
 	}
 
 	@Id
-	@Size(min = 1, max = 256)
-	@Pattern(regexp = "[^/]*", message = "The slash character is not allowed")
 	@Override
+	@Column(length = RdbmsConstants.NAME_MAX_LENGTH)
+	@Size(min = 1, max = RdbmsConstants.NAME_MAX_LENGTH)
+	@Pattern(regexp = "[^/]*", message = "The slash character is not allowed")
 	public String getId() {
 		return id();
 	}

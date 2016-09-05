@@ -34,18 +34,18 @@ public class AccountBasePage implements Serializable {
 				account = client.accounts().get(key).get();
 				if (account == null) {
 					tagsHolder.setTagEntries(new ArrayList<TagEntry>());
-					facesContext.addMessage(null, new FacesMessage("No account found for key " + key));
+					facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No account found for key " + key, null));
 					return null;
 				} else {
 					tagsHolder.setTags(account.getTags());
-					return "";
+					return null;
 				}
 			}
 
-			facesContext.addMessage(null, new FacesMessage("Invalid empty key!"));
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid empty key!", null));
 			return null;
 		} catch (RuntimeException ex) {
-			facesContext.addMessage(null, new FacesMessage("Could not load account"));
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not load account", null));
 			LOG.log(Level.SEVERE, "Could not load account " + key, ex);
 			return null;
 		}

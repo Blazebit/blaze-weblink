@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://java.sun.com/jsf/composite/weblink"
+	template="/WEB-INF/templates/template.xhtml">
+	
+	<f:metadata>
+		<f:viewParam name="account" value="#{securityGroupAddPage.accountKey}"/>
+	</f:metadata>
+	
+	<ui:define name="title">Add new securityGroup</ui:define>
+	
+	<ui:define name="content">
+		<ui:decorate template="/WEB-INF/fragment/contentForm.xhtml">
+			<ui:define name="header">
+				<p:link value="Back" outcome="/security-group/index.xhtml">
+					<f:param name="account" value="#{securityGroupAddPage.accountKey}"/>
+				</p:link>
+			</ui:define>
+			<ui:define name="content">
+				<p:outputLabel for="name" value="Name: " />
+				<p:inputText id="name" value="#{securityGroupAddPage.name}" required="true" requiredMessage="Name is required." />
+				
+				<p:outputLabel for="configuration" value="Configuration: " />
+				<w:constraintsInput id="configuration" value="#{securityGroupAddPage.constraintsHolder}" configurationProvider="#{securityGroupAddPage}"/>
+				
+				<p:outputLabel for="tags" value="Tags:" />
+				<w:tagsInput id="tags" value="#{securityGroupAddPage.tagsHolder}"/>
+			</ui:define>
+			<ui:define name="footer">
+				<p:commandButton value="Add" action="#{securityGroupAddPage.add()}" ajax="false"/>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+	
+</ui:composition>

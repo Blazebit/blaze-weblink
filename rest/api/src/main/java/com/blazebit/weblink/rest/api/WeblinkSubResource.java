@@ -1,11 +1,6 @@
 package com.blazebit.weblink.rest.api;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -28,8 +23,8 @@ public interface WeblinkSubResource {
 	// public Response options();
 
 	/**
-	 * This implementation of the DELETE operation marks the object named in the
-	 * URI (including all object versions) as deleted. If the object doesn't
+	 * This implementation of the DELETE operation marks the weblink named in the
+	 * URI (including all weblink versions) as deleted. If the weblink doesn't
 	 * exist this does nothing.
 	 * 
 	 * @return
@@ -39,6 +34,6 @@ public interface WeblinkSubResource {
 
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public Response put(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate);
+	public Response put(WeblinkUpdateRepresentation<ConfigurationTypeConfigEntryRepresentation> weblinkUpdate, @HeaderParam("x-blz-owner-key") String ownerKey);
 
 }

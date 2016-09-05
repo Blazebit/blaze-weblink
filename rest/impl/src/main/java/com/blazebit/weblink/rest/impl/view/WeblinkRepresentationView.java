@@ -28,12 +28,13 @@ public abstract class WeblinkRepresentationView extends WeblinkRepresentation {
 	public WeblinkRepresentationView(
 			@Mapping("targetUri") URI targetUri, 
 			@Mapping("expirationTime") Calendar expirationTime,
+			@Mapping("weblinkSecurityGroup.name") String securityGroupName,
 			@Mapping("dispatcherType") String dispatcherType,
 			@Mapping("dispatcherConfiguration") @MappingSingular Map<String, String> dispatcherConfiguration, 
 			@Mapping("tags") Map<String, String> tags,
 			@Mapping("creationDate") Calendar creationDate,
 			@MappingParameter("dispatcherDataAccess") WeblinkDispatcherFactoryDataAccess dispatcherDataAccess) {
-		super(targetUri.toString(), expirationTime, dispatcherType, fromMap(dispatcherConfiguration, dispatcherDataAccess.findByKey(dispatcherType).getMetamodel()), tags, creationDate);
+		super(targetUri.toString(), expirationTime, securityGroupName, dispatcherType, fromMap(dispatcherConfiguration, dispatcherDataAccess.findByKey(dispatcherType).getMetamodel()), tags, creationDate);
 	}
 
 	@JsonIgnore

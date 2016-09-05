@@ -10,16 +10,21 @@
 	xmlns:w="http://java.sun.com/jsf/composite/weblink">
 
 	<cc:interface>
-		<cc:attribute name="value" type="com.blazebit.weblink.server.faces.limit.LimitsHolder" />
+		<cc:attribute name="value" type="com.blazebit.weblink.server.faces.constraint.ConstraintsHolder" />
 	</cc:interface>
 
 	<cc:implementation>
 		<div id="#{cc.clientId}">
-			<ui:repeat value="#{cc.attrs.value.limitEntries}" var="entry">
-				<div id="#{cc.clientId}:#{entry.value}">
-					<h:outputText value="#{entry.value}" />
-				</div>
-			</ui:repeat>
+			<p:dataTable id="list" value="#{cc.attrs.value.constraintEntries}" var="entry" rowIndexVar="entryIndex">
+				<p:column headerText="Constraint">
+					<p:outputLabel for="type" value="Constraint type: " />
+					<h:outputText id="type" value="#{entry.type}"/>
+
+					<h:panelGroup id="configurationRow" layout="block">
+						<w:configurationOutput value="#{entry.configurationHolder}" />
+					</h:panelGroup>
+				</p:column>
+			</p:dataTable>
 		</div>
 	</cc:implementation>
 </ui:composition>

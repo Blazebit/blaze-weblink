@@ -1,11 +1,7 @@
 package com.blazebit.weblink.rest.impl;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -128,6 +124,10 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	}
 	
 	private static Map<String, String> toMap(Set<ConfigurationTypeConfigEntryRepresentation> configurationEntries) {
+		if (configurationEntries == null) {
+			return Collections.emptyMap();
+		}
+
 		Map<String, String> configurationMap = new LinkedHashMap<>(configurationEntries.size());
 		for (ConfigurationTypeConfigEntryRepresentation entry : configurationEntries) {
 			configurationMap.put(entry.getKey(), entry.getValue());
@@ -163,17 +163,17 @@ public class WeblinkGroupSubResourceImpl extends AbstractResource implements Web
 	}
 
 	@Override
-	public List<? extends BulkWeblinkRepresentation> getAllWeblinks(List<String> weblinkKeys) {
+	public List<BulkWeblinkRepresentation> getAllWeblinks(List<String> weblinkKeys) {
 		EntityViewSetting<BulkWeblinkRepresentationView, CriteriaBuilder<BulkWeblinkRepresentationView>> setting = EntityViewSetting.create(BulkWeblinkRepresentationView.class);
 		setting.addOptionalParameter("dispatcherDataAccess", weblinkDispatcherFactoryDataAccess);
 		if (weblinkKeys == null) {
-			return weblinkDataAccess.findAllByWeblinkGroup(weblinkGroupId, setting);
+			return (List<BulkWeblinkRepresentation>) (List<?>) weblinkDataAccess.findAllByWeblinkGroup(weblinkGroupId, setting);
 		} else {
 			List<WeblinkId> weblinkIds = new ArrayList<>();
 			for (String weblinkKey : weblinkKeys) {
 				weblinkIds.add(new WeblinkId(weblinkGroupId, weblinkKey));
 			}
-			return weblinkDataAccess.findByIds(weblinkIds, setting);
+			return (List<BulkWeblinkRepresentation>) (List<?>) weblinkDataAccess.findByIds(weblinkIds, setting);
 		}
 	}
 

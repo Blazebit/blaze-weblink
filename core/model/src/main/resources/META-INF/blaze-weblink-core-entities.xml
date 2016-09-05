@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
 	
 	<entity class="com.blazebit.weblink.core.model.jpa.WeblinkGroupSequence"/>
+	<entity class="com.blazebit.weblink.core.model.jpa.WeblinkSecurityGroup"/>
 	<entity class="com.blazebit.weblink.core.model.jpa.WeblinkGroup"/>
 	<entity class="com.blazebit.weblink.core.model.jpa.Weblink"/>
 	<entity class="com.blazebit.weblink.core.model.jpa.Account"/>

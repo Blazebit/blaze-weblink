@@ -57,5 +57,5 @@ public interface WeblinkGroupSubResource {
 	@GET
 	@Path("weblinks")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<? extends BulkWeblinkRepresentation> getAllWeblinks(@QueryParam("weblinkKey") List<String> weblinkKeys);
+	public List<BulkWeblinkRepresentation> getAllWeblinks(@QueryParam("weblinkKey") List<String> weblinkKeys);
 }

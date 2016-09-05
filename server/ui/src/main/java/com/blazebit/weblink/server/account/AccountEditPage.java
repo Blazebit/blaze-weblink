@@ -19,8 +19,8 @@ public class AccountEditPage extends AccountAddPage {
 			put();
 			return null;
 		} catch (RuntimeException ex) {
-			facesContext.addMessage(null, new FacesMessage("Could not update account"));
-			LOG.log(Level.SEVERE, "Could not update account " + key, ex);
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not put account", null));
+			LOG.log(Level.SEVERE, "Could not put account " + key, ex);
 			return null;
 		}
 	}

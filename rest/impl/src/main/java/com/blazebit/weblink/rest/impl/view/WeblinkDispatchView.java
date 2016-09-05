@@ -2,10 +2,12 @@ package com.blazebit.weblink.rest.impl.view;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 import com.blazebit.persistence.view.EntityView;
 import com.blazebit.persistence.view.IdMapping;
+import com.blazebit.persistence.view.Mapping;
 import com.blazebit.persistence.view.MappingSingular;
 import com.blazebit.weblink.core.model.jpa.Weblink;
 import com.blazebit.weblink.core.model.jpa.WeblinkId;
@@ -22,4 +24,11 @@ public interface WeblinkDispatchView extends Serializable {
 	
 	@MappingSingular
 	public Map<String, String> getDispatcherConfiguration();
+
+	@Mapping("weblinkSecurityGroup.id")
+	public Long getSecurityGroupId();
+
+	@MappingSingular
+	@Mapping("weblinkSecurityGroup.constraintConfigurations")
+	public List<Map<String, String>> getSecurityGroupConfiguration();
 }

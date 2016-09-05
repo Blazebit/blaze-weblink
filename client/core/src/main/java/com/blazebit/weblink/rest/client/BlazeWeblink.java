@@ -1,11 +1,6 @@
 package com.blazebit.weblink.rest.client;
 
-import com.blazebit.weblink.rest.api.AccountsResource;
-import com.blazebit.weblink.rest.api.AdminResource;
-import com.blazebit.weblink.rest.api.DispatcherTypesResource;
-import com.blazebit.weblink.rest.api.KeyStrategiesResource;
-import com.blazebit.weblink.rest.api.MatcherTypesResource;
-import com.blazebit.weblink.rest.api.WeblinkGroupsSubResource;
+import com.blazebit.weblink.rest.api.*;
 
 public interface BlazeWeblink {
 
@@ -20,6 +15,8 @@ public interface BlazeWeblink {
 	public DispatcherTypesResource dispatcherTypes();
 
 	public KeyStrategiesResource keyStrategies();
+
+	public SecurityConstraintTypesResource securityConstraintTypes();
 
 	public void close();
 

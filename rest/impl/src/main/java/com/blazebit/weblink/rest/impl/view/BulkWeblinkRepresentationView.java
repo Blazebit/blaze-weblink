@@ -28,13 +28,14 @@ public abstract class BulkWeblinkRepresentationView extends BulkWeblinkRepresent
 	public BulkWeblinkRepresentationView(
 			@Mapping("targetUri") URI targetUri, 
 			@Mapping("expirationTime") Calendar expirationTime,
+			@Mapping("weblinkSecurityGroup.name") String securityGroupName,
 			@Mapping("dispatcherType") String dispatcherType,
 			@Mapping("dispatcherConfiguration") @MappingSingular Map<String, String> dispatcherConfiguration, 
 			@Mapping("tags") Map<String, String> tags,
 			@Mapping("creationDate") Calendar creationDate,
 			@Mapping("id.name") String weblinkKey,
 			@MappingParameter("dispatcherDataAccess") WeblinkDispatcherFactoryDataAccess dispatcherDataAccess) {
-		super(targetUri.toString(), expirationTime, dispatcherType, fromMap(dispatcherConfiguration, dispatcherDataAccess.findByKey(dispatcherType).getMetamodel()), tags, creationDate, weblinkKey);
+		super(targetUri.toString(), expirationTime, securityGroupName, dispatcherType, fromMap(dispatcherConfiguration, dispatcherDataAccess.findByKey(dispatcherType).getMetamodel()), tags, creationDate, weblinkKey);
 	}
 
 	@JsonIgnore

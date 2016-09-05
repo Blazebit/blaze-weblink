@@ -34,6 +34,9 @@
 				<p:link value="Edit" outcome="/account/edit.xhtml">
 					<f:param name="key" value="#{accountDetailPage.account.key}"/>
 				</p:link>
+				<p:link value="Show weblink security groups" outcome="/security-group/index.xhtml">
+					<f:param name="account" value="#{accountDetailPage.account.key}"/>
+				</p:link>
 				<p:link value="Show weblink groups" outcome="/weblink-group/index.xhtml">
 					<f:param name="account" value="#{accountDetailPage.account.key}"/>
 				</p:link>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://java.sun.com/jsf/composite/weblink"
+	template="/WEB-INF/templates/template.xhtml">
+	
+	<f:metadata>
+		<f:viewParam name="group" value="#{weblinkAddPage.group}"/>
+	</f:metadata>
+	
+	<ui:define name="title">Add new group object</ui:define>
+	
+	<ui:define name="head">
+		<script type="text/javascript">
+		function start() {
+		    PF('statusDialog').show();
+		}
+		 
+		function stop() {
+		    PF('statusDialog').hide();
+		}
+		</script>
+	</ui:define>
+	
+	<ui:define name="content">
+		<ui:decorate template="/WEB-INF/fragment/contentForm.xhtml">
+			<ui:define name="header">
+				<h:link value="Back" outcome="/object/index.xhtml">
+					<f:param name="group" value="#{weblinkAddPage.group}"/>
+				</h:link>
+			</ui:define>
+			<ui:define name="content">
+				<p:outputLabel for="name" value="Name:" />
+				<p:inputText id="name" value="#{weblinkAddPage.key}" required="true" requiredMessage="Name is required." />
+				
+				<p:outputLabel for="targetUri" value="Target URI:" />
+				<p:inputText id="targetUri" value="#{weblinkAddPage.weblink.targetUri}" required="true" requiredMessage="Target URI is required." />
+				
+				<p:outputLabel for="expirationTime" value="Expiration time:" />
+				<p:calendar id="expirationTime" value="#{weblinkAddPage.weblink.expirationTime.time}" />
+
+				<p:outputLabel for="dispatcherType" value="Dispatcher type: " />
+				<p:selectOneMenu id="dispatcherType" value="#{weblinkAddPage.weblink.dispatcherType}" required="true" requiredMessage="Dispatcher type is required.">
+					<p:ajax process="@this" update="@this dispatcherConfigurationRow" listener="#{weblinkAddPage.onDispatcherTypeChanged()}"/>
+					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+					<f:selectItems value="#{dispatcherTypeItems}"/>
+				</p:selectOneMenu>
+
+				<p:outputLabel for="dispatcherConfiguration" value="Dispatcher configuration: " />
+				<h:panelGroup id="dispatcherConfigurationRow">
+					<h:outputText value="Select type first" rendered="#{weblinkAddPage.weblink.dispatcherType == null}"/>
+					<w:configurationInput id="dispatcherConfiguration" value="#{weblinkAddPage.dispatcherConfigurationHolder}" rendered="#{weblinkAddPage.weblink.dispatcherType != null}"/>
+				</h:panelGroup>
+
+				<p:outputLabel for="weblinkOwner" value="Owner: " />
+				<p:selectOneMenu id="weblinkOwner" value="#{weblinkAddPage.ownerAccount}" required="true" requiredMessage="Weblink owner is required.">
+					<p:ajax process="@this" update="@this securityGroupRow" listener="#{weblinkAddPage.onOwnerAccountChanged()}"/>
+					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+					<f:selectItems value="#{accountItems}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="securityGroup" value="Security group: " />
+				<h:panelGroup id="securityGroupRow">
+					<h:outputText value="Select weblink owner first" rendered="#{weblinkAddPage.ownerAccount == null}"/>
+					<p:selectOneMenu id="securityGroup" value="#{weblinkAddPage.weblink.securityGroupName}" rendered="#{weblinkAddPage.ownerAccount != null}">
+						<f:selectItem itemValue="#{null}" itemLabel="None" />
+						<f:selectItems value="#{weblinkAddPage.securityGroupItems}"/>
+					</p:selectOneMenu>
+				</h:panelGroup>
+				
+				<p:outputLabel for="tags" value="Tags:" />
+				<w:tagsInput id="tags" value="#{weblinkAddPage.tagsHolder}"/>
+			</ui:define>
+			<ui:define name="footer">
+				<p:commandButton value="Add" action="#{weblinkAddPage.add()}" ajax="false"/>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+	
+</ui:composition>

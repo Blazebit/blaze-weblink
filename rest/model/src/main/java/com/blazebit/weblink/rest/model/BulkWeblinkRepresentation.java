@@ -16,8 +16,8 @@ public class BulkWeblinkRepresentation extends WeblinkRepresentation {
 		super();
 	}
 
-	public BulkWeblinkRepresentation(String targetUri, Calendar expirationTime, String dispatcherType, Set<ConfigurationTypeConfigElementRepresentation> dispatcherConfiguration, Map<String, String> tags, Calendar creationDate, String weblinkKey) {
-		super(targetUri, expirationTime, dispatcherType, dispatcherConfiguration, tags, creationDate);
+	public BulkWeblinkRepresentation(String targetUri, Calendar expirationTime, String securityGroupName, String dispatcherType, Set<ConfigurationTypeConfigElementRepresentation> dispatcherConfiguration, Map<String, String> tags, Calendar creationDate, String weblinkKey) {
+		super(targetUri, expirationTime, securityGroupName, dispatcherType, dispatcherConfiguration, tags, creationDate);
 		this.weblinkKey = weblinkKey;
 	}
 

@@ -16,6 +16,7 @@ import com.blazebit.weblink.core.api.WeblinkGroupDataAccess;
 import com.blazebit.weblink.core.model.jpa.Account;
 import com.blazebit.weblink.rest.api.AccountSubResource;
 import com.blazebit.weblink.rest.api.AccountsResource;
+import com.blazebit.weblink.rest.api.WeblinkSecurityGroupsSubResource;
 import com.blazebit.weblink.rest.impl.view.AccountRepresentationView;
 import com.blazebit.weblink.rest.impl.view.WeblinkGroupListElementRepresentationView;
 import com.blazebit.weblink.rest.model.AccountRepresentation;
@@ -77,7 +78,12 @@ public class AccountSubResourceImpl extends AbstractResource implements AccountS
 	public List<WeblinkGroupListElementRepresentation> getWeblinkGroups() {
 		return (List<WeblinkGroupListElementRepresentation>) (List<?>) weblinkGroupDataAccess.findByAccountId(getAccountByKey(key).getId(), EntityViewSetting.create(WeblinkGroupListElementRepresentationView.class));
 	}
-	
+
+	@Override
+	public WeblinkSecurityGroupsSubResource getSecurityGroups() {
+		return inject(new WeblinkSecurityGroupsSubResourceImpl(getAccountByKey(key)));
+	}
+
 	private Account getAccountByKey(String key) {
 		return accountDataAccess.findByKey(key);
 	}

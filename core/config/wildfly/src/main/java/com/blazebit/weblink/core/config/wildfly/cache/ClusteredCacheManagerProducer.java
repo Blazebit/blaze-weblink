@@ -25,22 +25,22 @@ import com.blazebit.weblink.core.config.api.cache.ClusteredCache;
 @Singleton
 public class ClusteredCacheManagerProducer {
 
-    @Resource(lookup = "java:jboss/infinispan/container/weblink")
-    private EmbeddedCacheManager cacheManager;
-    
-    @PostConstruct
-    public void init() {
-    	// Start caches on startup
-    	for (String name : cacheManager.getCacheNames()) {
-    		cacheManager.getCache(name);
-    	}
-    }
-    
-    @Produces
-    @ClusteredCache
-    @ApplicationScoped
-    public CacheManager produceJcacheCacheManager() {
-    	// Note that we don't close the cache manager because the underlying resource is container managed
-    	return new org.infinispan.jcache.embedded.JCacheManager(URI.create("weblink"), cacheManager, Caching.getCachingProvider());
-    }
+//    @Resource(lookup = "java:jboss/infinispan/container/weblink")
+//    private EmbeddedCacheManager cacheManager;
+//
+//    @PostConstruct
+//    public void init() {
+//    	// Start caches on startup
+//    	for (String name : cacheManager.getCacheNames()) {
+//    		cacheManager.getCache(name);
+//    	}
+//    }
+//
+//    @Produces
+//    @ClusteredCache
+//    @ApplicationScoped
+//    public CacheManager produceJcacheCacheManager() {
+//    	// Note that we don't close the cache manager because the underlying resource is container managed
+//    	return new org.infinispan.jcache.embedded.JCacheManager(URI.create("weblink"), cacheManager, Caching.getCachingProvider());
+//    }
 }

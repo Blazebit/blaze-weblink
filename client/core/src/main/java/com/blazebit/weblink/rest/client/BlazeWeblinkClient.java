@@ -11,15 +11,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.WebTarget;
 
+import com.blazebit.weblink.rest.api.*;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
-
-import com.blazebit.weblink.rest.api.AccountsResource;
-import com.blazebit.weblink.rest.api.AdminResource;
-import com.blazebit.weblink.rest.api.DispatcherTypesResource;
-import com.blazebit.weblink.rest.api.KeyStrategiesResource;
-import com.blazebit.weblink.rest.api.MatcherTypesResource;
-import com.blazebit.weblink.rest.api.WeblinkGroupsResource;
-import com.blazebit.weblink.rest.api.WeblinkGroupsSubResource;
 
 public class BlazeWeblinkClient implements BlazeWeblink, Serializable {
 
@@ -84,7 +77,12 @@ public class BlazeWeblinkClient implements BlazeWeblink, Serializable {
 		return WebResourceFactory.newResource(KeyStrategiesResource.class, initTarget());
 	}
 
-    @Override
+	@Override
+	public SecurityConstraintTypesResource securityConstraintTypes() {
+		return WebResourceFactory.newResource(SecurityConstraintTypesResource.class, initTarget());
+	}
+
+	@Override
 	public void close() {
         client.close();
     }

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:w="http://java.sun.com/jsf/composite/weblink"
+	template="/WEB-INF/templates/template.xhtml">
+	
+	<f:metadata>
+		<f:viewParam name="group" value="#{weblinkEditPage.group}"/>
+		<f:viewParam name="key" value="#{weblinkEditPage.key}"/>
+    	<f:viewAction action="#{weblinkEditPage.viewAction}"/>
+	</f:metadata>
+	
+	<ui:define name="title">Bucket object edit</ui:define>
+	
+	<ui:define name="head">
+		<script type="text/javascript">
+		function start() {
+		    PF('statusDialog').show();
+		}
+		 
+		function stop() {
+		    PF('statusDialog').hide();
+		}
+		</script>
+	</ui:define>
+	
+	<ui:define name="content">
+		<ui:decorate template="/WEB-INF/fragment/contentForm.xhtml">
+			<ui:define name="header">
+			<p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+				<p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+			</p:dialog>
+				<h:link value="Back" outcome="/object/index.xhtml" rendered="#{weblinkEditPage.parent != null}">
+					<f:param name="group" value="#{weblinkEditPage.group}"/>
+					<f:param name="parent" value="#{weblinkEditPage.parent}"/>
+				</h:link>
+				<h:link value="Back" outcome="/object/index.xhtml" rendered="#{weblinkEditPage.parent == null}">
+					<f:param name="group" value="#{weblinkEditPage.group}"/>
+				</h:link>
+			</ui:define>
+			<ui:define name="content">
+				<p:outputLabel for="name" value="Name:" />
+				<h:outputText id="name" value="#{weblinkEditPage.key}" />
+				
+				<p:outputLabel for="contentType" value="Content type:" />
+				<p:inputText id="contentType" value="#{weblinkEditPage.weblink.contentType}" required="true" requiredMessage="Content type is required." />
+				
+				<p:outputLabel for="externalContentKey" value="External content key:" />
+				<p:inputText id="externalContentKey" value="#{weblinkEditPage.weblink.externalContentKey}" />
+				
+				<p:outputLabel for="contentDisposition" value="Content disposition:" />
+				<p:selectOneMenu id="contentDisposition" value="#{weblinkEditPage.contentDisposition}">
+					<p:ajax process="@this" update="@this contentDispositionFilenameRow"/>
+					<f:selectItem itemValue="#{null}" itemLabel="None" />
+					<f:selectItem itemValue="inline" itemLabel="Inline" />
+					<f:selectItem itemValue="attachement" itemLabel="Attachement" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="contentDispositionFilename" value="Content disposition filename: " />
+				<h:panelGroup id="contentDispositionFilenameRow">
+					<h:outputText value="Filename is only possible with content disposition" rendered="#{weblinkEditPage.contentDisposition == null}"/>
+					<p:inputText id="contentDispositionFilename" value="#{weblinkEditPage.contentDispositionFilename}" required="true" requiredMessage="Content disposition filename is required." rendered="#{weblinkEditPage.contentDisposition != null}"/>
+				</h:panelGroup>
+				
+				<p:outputLabel for="storageOwner" value="Storage owner: " />
+				<p:selectOneMenu id="storageOwner" value="#{weblinkEditPage.weblink.storageOwner}" required="true" requiredMessage="Storage owner is required.">
+					<p:ajax process="@this" update="@this storageRow" listener="#{weblinkEditPage.onOwnerAccountChanged()}"/>
+					<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+					<f:selectItems value="#{accountItems}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="storage" value="Storage: " />
+				<h:panelGroup id="storageRow">
+					<h:outputText value="Select account first" rendered="#{weblinkEditPage.weblink.storageOwner == null}"/>
+					<p:selectOneMenu id="storage" value="#{weblinkEditPage.weblink.storageName}" required="true" requiredMessage="Storage is required." rendered="#{weblinkEditPage.weblink.storageOwner != null}">
+						<f:selectItem itemValue="#{null}" itemLabel="Choose..." />
+						<f:selectItems value="#{weblinkEditPage.securityGroupItems}"/>
+					</p:selectOneMenu>
+				</h:panelGroup>
+				
+				<p:outputLabel for="content" value="Content:" />
+				<h:panelGroup id="contentGroup">
+					<p:commandButton id="currentContent" value="Download" ajax="false" immediate="true" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+						<p:fileDownload value="#{weblinkEditPage.streamContent}" contentDisposition="attachement"/>
+					</p:commandButton>
+					<p:fileUpload id="content" fileUploadListener="#{weblinkEditPage.handleFileUpload}" fileLimit="1" mode="advanced" dragDropSupport="true" update="contentGroup" />
+				</h:panelGroup>
+				
+				<p:outputLabel for="tags" value="Tags:" />
+				<w:tagsInput id="tags" value="#{weblinkEditPage.tagsHolder}"/>
+			</ui:define>
+			<ui:define name="footer">
+				<p:commandButton value="Update" action="#{weblinkEditPage.update()}" ajax="false"/>
+			</ui:define>
+		</ui:decorate>
+	</ui:define>
+	
+</ui:composition>

@@ -15,6 +15,7 @@ public class WeblinkUpdateRepresentation<X extends ConfigurationTypeConfigEntryR
 
 	private String targetUri;
 	private Calendar expirationTime;
+	private String securityGroupName;
 	private String dispatcherType;
 	private Set<X> dispatcherConfiguration = new LinkedHashSet<>(0);
 	private Map<String, String> tags = new HashMap<String, String>(0);
@@ -22,9 +23,10 @@ public class WeblinkUpdateRepresentation<X extends ConfigurationTypeConfigEntryR
 	public WeblinkUpdateRepresentation() {
 	}
 
-	public WeblinkUpdateRepresentation(String targetUri, Calendar expirationTime, String dispatcherType, Set<X> dispatcherConfiguration, Map<String, String> tags) {
+	public WeblinkUpdateRepresentation(String targetUri, Calendar expirationTime, String securityGroupName, String dispatcherType, Set<X> dispatcherConfiguration, Map<String, String> tags) {
 		this.targetUri = targetUri;
 		this.expirationTime = expirationTime;
+		this.securityGroupName = securityGroupName;
 		this.dispatcherType = dispatcherType;
 		this.dispatcherConfiguration = dispatcherConfiguration;
 		this.tags = tags;
@@ -44,6 +46,14 @@ public class WeblinkUpdateRepresentation<X extends ConfigurationTypeConfigEntryR
 
 	public void setExpirationTime(Calendar expirationTime) {
 		this.expirationTime = expirationTime;
+	}
+
+	public String getSecurityGroupName() {
+		return securityGroupName;
+	}
+
+	public void setSecurityGroupName(String securityGroupName) {
+		this.securityGroupName = securityGroupName;
 	}
 
 	public String getDispatcherType() {
