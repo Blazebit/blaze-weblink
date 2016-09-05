@@ -65,6 +65,7 @@ public class SecurityGroupBasePage implements Serializable {
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid empty name!", null));
 			return null;
 		} catch (RuntimeException ex) {
+			securityGroup = null;
 			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not load security group", null));
 			LOG.log(Level.SEVERE, "Could not load security group " + name, ex);
 			return null;

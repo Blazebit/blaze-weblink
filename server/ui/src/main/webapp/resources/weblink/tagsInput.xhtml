@@ -15,11 +15,11 @@
 
 	<cc:implementation>
 		<div id="#{cc.clientId}">
-			<h:dataTable id="table" binding="#{cc.table}" value="#{cc.attrs.value.tagEntries}" var="entry">
-	            <h:column><p:inputText value="#{entry.key}"/></h:column>
-	            <h:column><p:inputText value="#{entry.value}"/></h:column>
-	            <h:column><p:commandButton value="remove" action="#{cc.removeTag()}" process=":#{cc.clientId}" update=":#{cc.clientId}"/></h:column>
-	        </h:dataTable>
+			<p:dataTable id="table" binding="#{cc.table}" value="#{cc.attrs.value.tagEntries}" var="entry" styleClass="hide-column-names">
+	            <p:column><p:inputText value="#{entry.key}"/></p:column>
+	            <p:column><p:inputText value="#{entry.value}"/></p:column>
+	            <p:column><p:commandButton value="remove" action="#{cc.removeTag()}" process=":#{cc.clientId}" update=":#{cc.clientId}"/></p:column>
+	        </p:dataTable>
 			<p:commandButton value="Add tag" actionListener="#{cc.addTag()}" process=":#{cc.clientId}" update=":#{cc.clientId}"/>
 		</div>
 	</cc:implementation>

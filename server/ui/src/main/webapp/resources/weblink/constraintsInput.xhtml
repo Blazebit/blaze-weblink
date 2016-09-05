@@ -16,8 +16,8 @@
 
 	<cc:implementation>
 		<div id="#{cc.clientId}">
-			<p:dataTable id="list" binding="#{cc.list}" value="#{cc.attrs.value.constraintEntries}" var="entry" rowIndexVar="entryIndex">
-				<p:column headerText="Constraint">
+			<p:dataTable id="list" binding="#{cc.list}" value="#{cc.attrs.value.constraintEntries}" var="entry" rowIndexVar="entryIndex" styleClass="hide-column-names">
+				<p:column>
 					<p:outputLabel for="type" value="Constraint type" />
 					<p:selectOneMenu id="type" value="#{entry.type}" required="true" requiredMessage="Constraint type is required.">
 						<p:ajax process="@this" update="@this configurationRow" listener="#{cc.onTypeChanged(entryIndex, cc.attrs.configurationProvider.createConfiguration(entry.type))}"/>
