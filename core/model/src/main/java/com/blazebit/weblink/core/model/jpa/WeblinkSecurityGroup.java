@@ -31,7 +31,7 @@ public class WeblinkSecurityGroup extends SequenceBaseEntity {
 	}
 
 	@NotNull
-	@Column(length = RdbmsConstants.NAME_MAX_LENGTH)
+	@Column(length = RdbmsConstants.NAME_MAX_LENGTH, nullable = false)
 	@Size(min = 1, max = RdbmsConstants.NAME_MAX_LENGTH)
 	@Pattern(regexp = "[^/]*", message = "The slash character is not allowed")
 	public String getName() {
@@ -44,7 +44,7 @@ public class WeblinkSecurityGroup extends SequenceBaseEntity {
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date")
+	@Column(name = "creation_date", nullable = false)
 	public Calendar getCreationDate() {
 		return creationDate;
 	}

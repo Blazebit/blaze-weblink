@@ -108,8 +108,12 @@
             <column name="CONSTRAINT_CONFIGURATIONS" type="CLOB">
                 <constraints nullable="false"/>
             </column>
-            <column name="CREATION_DATE" type="TIMESTAMP"/>
-            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="CREATION_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="OWNER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
