@@ -113,7 +113,9 @@ public class WeblinkServiceImpl extends AbstractService implements WeblinkServic
 		WeblinkDispatcherFactory dispatcherFactory = weblinkDispatcherFactoryDataAccess.findByKey(weblink.getDispatcherType());
 		dispatcherFactory.createWeblinkDispatcher(weblink.getDispatcherConfiguration());
 
-		weblink.setWeblinkSecurityGroup(em.getReference(WeblinkSecurityGroup.class, weblink.getWeblinkSecurityGroup().getId()));
+		if (weblink.getWeblinkSecurityGroup() != null) {
+			weblink.setWeblinkSecurityGroup(em.getReference(WeblinkSecurityGroup.class, weblink.getWeblinkSecurityGroup().getId()));
+		}
 
 		em.persist(weblink);
 		em.flush();
