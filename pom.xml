@@ -50,7 +50,7 @@
 		
 		<version.blazecbav>0.2.0</version.blazecbav>
 		<version.blazeutils>0.1.14</version.blazeutils>
-		<version.blazepersistence>1.2.0-Alpha1</version.blazepersistence>
+		<version.blazepersistence>1.2.0-SNAPSHOT</version.blazepersistence>
 		<version.deltaspike>1.4.1</version.deltaspike>
 		<version.liquibase>3.4.2</version.liquibase>
 		<version.hibernate>5.0.7.Final</version.hibernate>
@@ -517,6 +517,25 @@
 				<type>pom</type>
 			</dependency>
 
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging</artifactId>
+				<version>3.2.1.Final</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.arquillian.container</groupId>
+				<artifactId>arquillian-container-chameleon</artifactId>
+				<version>1.0.0.Alpha7</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.6.2</version>
+				<scope>test</scope>
+			</dependency>
+
 			<!-- Deltaspike Test -->
 
 			<dependency>
@@ -540,188 +559,7 @@
 					<artifactId>maven-processor-plugin</artifactId>
 					<version>${version.processor.plugin}</version>
 				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>${version.buildhelper.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>buildnumber-maven-plugin</artifactId>
-					<version>${version.buildnumber.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${version.compiler.plugin}</version>
-					<configuration>
-						<showDeprecation>true</showDeprecation>
-						<showWarnings>true</showWarnings>
-						<compilerArguments>
-							<source>${maven.compiler.argument.source}</source>
-							<target>${maven.compiler.argument.target}</target>
-						</compilerArguments>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>${version.dependency.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${version.deploy.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-ejb-plugin</artifactId>
-					<version>${version.ejb.plugin}</version>
-					<configuration>
-						<ejbVersion>3.1</ejbVersion>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>${version.enforcer.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>${version.gpg.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>${version.jar.plugin}</version>
-					<configuration>
-						<archive>
-							<index>true</index>
-							<manifest>
-								<addDefaultSpecificationEntries>
-									true
-								</addDefaultSpecificationEntries>
-								<addDefaultImplementationEntries>
-									true
-								</addDefaultImplementationEntries>
-							</manifest>
-							<manifestEntries>
-								<Implementation-URL>${project.url}</Implementation-URL>
-								<Java-Version>${java.version}</Java-Version>
-								<Java-Vendor>${java.vendor}</Java-Vendor>
-								<Os-Name>${os.name}</Os-Name>
-								<Os-Arch>${os.arch}</Os-Arch>
-								<Os-Version>${os.version}</Os-Version>
-								<Scm-Url>${project.scm.url}</Scm-Url>
-								<Scm-Connection>${project.scm.connection}</Scm-Connection>
-								<Scm-Revision>${buildNumber}</Scm-Revision>
-								<Build-Timestamp>${build.datetime}</Build-Timestamp>
-							</manifestEntries>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${version.javadoc.plugin}</version>
-					<configuration>
-						<header><![CDATA[<b>${project.name} ${project.version}</b>]]>
-						</header>
-						<footer><![CDATA[<b>${project.name} ${project.version}</b>]]>
-						</footer>
-						<archive>
-							<index>true</index>
-							<manifest>
-								<addDefaultSpecificationEntries>
-									true
-								</addDefaultSpecificationEntries>
-								<addDefaultImplementationEntries>
-									true
-								</addDefaultImplementationEntries>
-							</manifest>
-							<manifestEntries>
-								<Implementation-URL>${project.url}</Implementation-URL>
-								<Java-Version>${java.version}</Java-Version>
-								<Java-Vendor>${java.vendor}</Java-Vendor>
-								<Os-Name>${os.name}</Os-Name>
-								<Os-Arch>${os.arch}</Os-Arch>
-								<Os-Version>${os.version}</Os-Version>
-								<Scm-Url>${project.scm.url}</Scm-Url>
-								<Scm-Connection>${project.scm.connection}</Scm-Connection>
-								<Scm-Revision>${buildNumber}</Scm-Revision>
-								<Build-Timestamp>${build.datetime}</Build-Timestamp>
-							</manifestEntries>
-						</archive>
-						<encoding>UTF-8</encoding>
-						<maxmemory>1g</maxmemory>
-						<links>
-							<link>http://docs.oracle.com/javase/6/docs/api/</link>
-						</links>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${version.source.plugin}</version>
-					<configuration>
-						<archive>
-							<index>true</index>
-							<manifest>
-								<addDefaultSpecificationEntries>
-									true
-								</addDefaultSpecificationEntries>
-								<addDefaultImplementationEntries>
-									true
-								</addDefaultImplementationEntries>
-							</manifest>
-							<manifestEntries>
-								<Implementation-URL>${project.url}</Implementation-URL>
-								<Java-Version>${java.version}</Java-Version>
-								<Java-Vendor>${java.vendor}</Java-Vendor>
-								<Os-Name>${os.name}</Os-Name>
-								<Os-Arch>${os.arch}</Os-Arch>
-								<Os-Version>${os.version}</Os-Version>
-								<Scm-Url>${project.scm.url}</Scm-Url>
-								<Scm-Connection>${project.scm.connection}</Scm-Connection>
-								<Scm-Revision>${buildNumber}</Scm-Revision>
-								<Build-Timestamp>${build.datetime}</Build-Timestamp>
-							</manifestEntries>
-						</archive>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${version.surefire.plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>${version.war.plugin}</version>
-					<configuration>
-						<failOnMissingWebXml>false</failOnMissingWebXml>
-					</configuration>
-				</plugin>
-
+				
 				<plugin>
 					<groupId>org.asciidoctor</groupId>
 					<artifactId>asciidoctor-maven-plugin</artifactId>
@@ -824,162 +662,24 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>${version.release.plugin}</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
 
-			<!-- Check for the minimum version of Java and Maven. Runs during the 
-				validate phase. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>enforce-java-version</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireJavaVersion>
-									<message>To build this project JDK ${jdk.min.version} (or
-										greater) is required. Please install it.</message>
-									<version>${jdk.min.version}</version>
-								</requireJavaVersion>
-							</rules>
-						</configuration>
-					</execution>
-					<execution>
-						<id>enforce-maven-version</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireMavenVersion>
-									<message>To build this project Maven ${maven.min.version} (or
-										greater) is required. Please install it.</message>
-									<version>${maven.min.version}</version>
-								</requireMavenVersion>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Set properties containing the scm revision and build timestamp -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>get-build-timestamp</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>create-timestamp</goal>
-						</goals>
-						<configuration>
-							<!-- Example date: Wed, 4 Jul 2001 12:08:56 -0700 -->
-							<timestampFormat>EEE, d MMM yyyy HH:mm:ss Z</timestampFormat>
-							<timestampPropertyName>build.datetime</timestampPropertyName>
-						</configuration>
-					</execution>
-					<execution>
-						<id>get-scm-revision</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-						<configuration>
-							<doCheck>false</doCheck>
-							<doUpdate>false</doUpdate>
-							<revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
-							<getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Attach source jar to all builds. Runs during the package phase. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                    <preparationGoals>clean install -DskipTests</preparationGoals>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
 	<profiles>
-		<profile>
-			<id>blazebit-release</id>
-			<build>
-				<plugins>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-deploy-plugin</artifactId>
-						<configuration>
-							<updateReleaseInfo>true</updateReleaseInfo>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<!-- This will sign the artifact, the POM, and all attached artifacts -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<configuration>
-							<passphrase>${gpg.passphrase}</passphrase>
-							<useAgent>true</useAgent>
-						</configuration>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-release-plugin</artifactId>
-						<configuration>
-							<pushChanges>false</pushChanges>
-							<localCheckout>true</localCheckout>
-							<autoVersionSubmodules>true</autoVersionSubmodules>
-
-							<preparationGoals>clean install</preparationGoals>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<profile>
 			<!-- It disables javadoc doclint for JDK > 8 -->
 			<id>javadoc-xdoclint-disable-jdk8+</id>
@@ -999,37 +699,6 @@
 					</plugins>
 				</pluginManagement>
 			</build>
-		</profile>
-		<profile>
-			<id>wildfly-remote</id>
-			<dependencies>
-				<!-- Needed to make Arquillian work with the remote server adapter -->
-		        <dependency>
-		            <groupId>org.jboss.logging</groupId>
-		            <artifactId>jboss-logging</artifactId>
-		            <version>3.2.1.Final</version>
-		            <scope>test</scope>
-		        </dependency>
-				<dependency>
-					<groupId>org.wildfly.arquillian</groupId>
-					<artifactId>wildfly-arquillian-container-remote</artifactId>
-					<version>1.0.2.Final</version>
-					<scope>test</scope>
-					<!-- Exclude this for arquillian to work with the remote adapter -->
-					<exclusions>
-						<exclusion>
-							<artifactId>jboss-logging</artifactId>
-							<groupId>org.jboss.logging</groupId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				<dependency>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-					<version>1.6.2</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
 		</profile>
 	</profiles>
 </project>
