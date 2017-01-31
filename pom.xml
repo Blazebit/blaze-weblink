@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.blazebit</groupId>
 		<artifactId>blazebit-parent</artifactId>
-		<version>8</version>
+		<version>10</version>
 	</parent>
 
 	<artifactId>blaze-weblink</artifactId>
@@ -38,7 +38,7 @@
 		<version.surefire.plugin>2.17</version.surefire.plugin>
 		<version.war.plugin>2.3</version.war.plugin>
 		<version.asciidoctor>1.5.2</version.asciidoctor>
-		<version.release.plugin>2.5.1</version.release.plugin>
+		<version.release.plugin>2.5.3</version.release.plugin>
 
 		<!-- ******************* -->
 		<!-- Dependency versions -->
@@ -97,7 +97,7 @@
 
 		<!-- maven-release-plugin -->
 		<useReleaseProfile>false</useReleaseProfile>
-		<arguments>-Psweazer-release</arguments>
+		<arguments>-Pblazebit-release</arguments>
 	</properties>
 
 	<prerequisites>
