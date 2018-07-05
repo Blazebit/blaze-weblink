@@ -31,11 +31,11 @@
             <column name="WEBLINK_GROUP_ID" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="CREATION_DATE" type="TIMESTAMP"/>
+            <column name="CREATION_DATE" type="TIMESTAMP(6)"/>
             <column name="DISPATCHER_CONFIGURATION" type="CLOB">
                 <constraints nullable="false"/>
             </column>
-            <column name="EXPIRATION_TIME" type="TIMESTAMP"/>
+            <column name="EXPIRATION_TIME" type="TIMESTAMP(6)"/>
             <column name="DISPATCHER_TYPE" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -47,7 +47,7 @@
             <column name="ID" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="CREATION_DATE" type="TIMESTAMP"/>
+            <column name="CREATION_DATE" type="TIMESTAMP(6)"/>
             <column name="KEY_STRATEGY_CONFIGURATION" type="CLOB">
                 <constraints nullable="false"/>
             </column>
@@ -108,7 +108,7 @@
             <column name="CONSTRAINT_CONFIGURATIONS" type="CLOB">
                 <constraints nullable="false"/>
             </column>
-            <column name="CREATION_DATE" type="TIMESTAMP">
+            <column name="CREATION_DATE" type="TIMESTAMP(6)">
                 <constraints nullable="false"/>
             </column>
             <column name="NAME" type="VARCHAR(255)">
